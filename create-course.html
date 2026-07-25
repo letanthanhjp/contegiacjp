@@ -9,55 +9,40 @@
 
 body{
     margin:0;
-    background:#F3F6FB;
+    background:#f5f5f5;
     font-family:Arial,sans-serif;
-}
-
-.top-bar{
-    display:flex;
-    justify-content:flex-end;
-    padding:20px 40px;
-}
-
-.top-bar a{
-    text-decoration:none;
-    background:#22c55e;
-    color:white;
-    padding:12px 22px;
-    border-radius:12px;
-    font-weight:bold;
-    transition:.25s;
-    box-shadow:0 5px 15px rgba(34,197,94,.35);
-}
-
-.top-bar a:hover{
-    background:#16a34a;
 }
 
 .container{
     width:900px;
-    margin:20px auto 60px;
+    margin:40px auto;
     background:white;
-    border-radius:20px;
+    border-radius:12px;
     padding:50px;
-    box-shadow:0 0 25px rgba(0,0,0,.12);
+    box-shadow:0 0 15px rgba(0,0,0,.12);
 }
 
 h1{
     text-align:center;
     color:#1E40AF;
-    margin-bottom:40px;
+    margin-bottom:50px;
 }
 
-.form-group{
-    margin-bottom:25px;
+.form-row{
+    display:flex;
+    margin-bottom:28px;
+    align-items:flex-start;
 }
 
-label{
-    display:block;
-    font-size:18px;
+.form-row label{
+    width:170px;
+    font-size:24px;
     font-weight:bold;
-    margin-bottom:8px;
+    padding-top:12px;
+}
+
+.right{
+    flex:1;
 }
 
 input,
@@ -66,33 +51,70 @@ textarea{
 
     width:100%;
     padding:14px;
-    font-size:17px;
+    font-size:18px;
     border:1px solid #ccc;
-    border-radius:10px;
+    border-radius:6px;
     box-sizing:border-box;
 
 }
 
 textarea{
+
+    height:180px;
     resize:vertical;
-    min-height:120px;
+
 }
 
-.btn{
-    width:100%;
-    background:#22c55e;
+.note{
+
+    color:#777;
+    margin-top:10px;
+    font-size:17px;
+
+}
+
+.create{
+
+    text-align:center;
+    margin-top:40px;
+
+}
+
+button{
+
+    background:#57B9F4;
     color:white;
     border:none;
-    padding:16px;
+    padding:16px 50px;
     font-size:22px;
-    font-weight:bold;
-    border-radius:12px;
+    border-radius:8px;
     cursor:pointer;
-    transition:.25s;
+
 }
 
-.btn:hover{
-    background:#16a34a;
+button:hover{
+
+    background:#3da8e8;
+
+}
+
+.back{
+
+    width:900px;
+    margin:25px auto 0;
+    text-align:right;
+
+}
+
+.back a{
+
+    text-decoration:none;
+    background:#22c55e;
+    color:white;
+    padding:10px 20px;
+    border-radius:10px;
+    font-weight:bold;
+
 }
 
 </style>
@@ -101,26 +123,35 @@ textarea{
 
 <body>
 
-<div class="top-bar">
-    <a href="n1.html">⬅ Quay lại</a>
+<div class="back">
+<a href="n1.html">⬅ Quay lại</a>
 </div>
 
 <div class="container">
 
-<h1>📘 Tạo khóa học</h1>
+<h1>Tạo khóa học</h1>
 
-<div class="form-group">
+<div class="form-row">
 
-<label>Tên khóa học</label>
+<label>Tên</label>
 
-<input type="text"
-placeholder="Ví dụ: Shin Kanzen Master Goi N1">
+<div class="right">
+
+<input type="text">
+
+<div class="note">
+Đặt tên phù hợp để học viên dễ tìm kiếm khóa học.
+</div>
 
 </div>
 
-<div class="form-group">
+</div>
+
+<div class="form-row">
 
 <label>Level</label>
+
+<div class="right">
 
 <select>
 
@@ -140,9 +171,13 @@ placeholder="Ví dụ: Shin Kanzen Master Goi N1">
 
 </div>
 
-<div class="form-group">
+</div>
+
+<div class="form-row">
 
 <label>Dạng</label>
+
+<div class="right">
 
 <select>
 
@@ -164,40 +199,33 @@ placeholder="Ví dụ: Shin Kanzen Master Goi N1">
 
 </div>
 
-<div class="form-group">
-
-<label>Tên bộ sách</label>
-
-<input
-type="text"
-placeholder="Ví dụ: Shin Kanzen Master">
-
 </div>
 
-<div class="form-group">
-
-<label>Số bài</label>
-
-<input
-type="number"
-placeholder="Ví dụ: 50">
-
-</div>
-
-<div class="form-group">
+<div class="form-row">
 
 <label>Mô tả</label>
 
-<textarea
-placeholder="Giới thiệu ngắn về khóa học..."></textarea>
+<div class="right">
+
+<textarea></textarea>
+
+<div class="note">
+Mô tả ngắn về nội dung khóa học.
+</div>
 
 </div>
 
-<button class="btn">
+</div>
+
+<div class="create">
+
+<button>
 
 📘 Tạo khóa học
 
 </button>
+
+</div>
 
 </div>
 
