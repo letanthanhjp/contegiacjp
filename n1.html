@@ -13,7 +13,7 @@ body{
     font-family:Arial, sans-serif;
 }
 
-/* Thanh trên cùng */
+/* Thanh trên */
 
 .top-bar{
     display:flex;
@@ -30,7 +30,7 @@ body{
     border-radius:12px;
     font-size:18px;
     font-weight:bold;
-    transition:0.25s;
+    transition:.25s;
     box-shadow:0 5px 15px rgba(34,197,94,.35);
 }
 
@@ -39,7 +39,7 @@ body{
     transform:translateY(-2px);
 }
 
-/* Nội dung */
+/* Khung */
 
 .container{
     width:900px;
@@ -54,13 +54,39 @@ body{
 h1{
     color:#1E40AF;
     font-size:52px;
-    margin-bottom:20px;
+    margin-bottom:35px;
 }
 
-p{
-    font-size:24px;
-    line-height:42px;
-    color:#333;
+/* Nút tạo khóa học */
+
+.create-btn{
+    display:inline-block;
+    text-decoration:none;
+    background:#22c55e;
+    color:white;
+    padding:15px 30px;
+    border-radius:12px;
+    font-size:20px;
+    font-weight:bold;
+    transition:.25s;
+    box-shadow:0 5px 15px rgba(34,197,94,.35);
+}
+
+.create-btn:hover{
+    background:#16a34a;
+    transform:translateY(-2px);
+}
+
+/* Danh sách khóa học */
+
+.course-list{
+    margin-top:45px;
+}
+
+.empty{
+    color:#888;
+    font-size:22px;
+    margin-top:50px;
 }
 
 </style>
@@ -77,13 +103,17 @@ p{
 
 <h1>N1</h1>
 
-<p>
-Đây là trang học từ vựng N1.
-</p>
+<a href="create-course.html" class="create-btn">
+➕ Tạo khóa học
+</a>
 
-<p>
-🚧 Nội dung sẽ sớm được cập nhật.
-</p>
+<div class="course-list">
+
+    <p class="empty">
+        Chưa có khóa học nào.
+    </p>
+
+</div>
 
 </div>
 
