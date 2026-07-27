@@ -15,10 +15,60 @@ body{
     text-align:center;
 }
 
+/* ================= HEADER ================= */
+
+.header{
+    width:1000px;
+    margin:auto;
+    margin-top:30px;
+    display:flex;
+    justify-content:flex-end;
+    gap:15px;
+}
+
+/* Đăng ký */
+
+.register-btn{
+    background:#22C55E;
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:12px 22px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+    transition:.25s;
+}
+
+.register-btn:hover{
+    background:#16A34A;
+}
+
+/* Đăng nhập */
+
+.login-btn{
+    background:white;
+    color:#1E40AF;
+    border:2px solid #1E40AF;
+    border-radius:10px;
+    padding:12px 22px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+    transition:.25s;
+}
+
+.login-btn:hover{
+    background:#1E40AF;
+    color:white;
+}
+
+/* ================= MAIN ================= */
+
 .box{
     width:900px;
     margin:auto;
-    margin-top:80px;
+    margin-top:20px;
     background:white;
     padding:50px;
     border-radius:20px;
@@ -53,7 +103,7 @@ p{
     font-size:18px;
     font-weight:bold;
     cursor:pointer;
-    transition:0.25s;
+    transition:.25s;
 }
 
 .level-menu button:hover{
@@ -67,6 +117,24 @@ p{
 
 <body>
 
+<!-- HEADER -->
+
+<div class="header">
+
+<button class="register-btn">
+Đăng ký
+<br>
+<span style="font-size:12px;">(Mất 10 giây)</span>
+</button>
+
+<button class="login-btn">
+Đăng nhập
+</button>
+
+</div>
+
+<!-- MAIN -->
+
 <div class="box">
 
 <h1>ConteGiacJP</h1>
@@ -78,13 +146,14 @@ vì đã tìm thấy địa chỉ này.
 </h2>
 
 <div class="level-menu">
-    
-    <button onclick="location.href='n5.html'">N5</button>
-    <button onclick="location.href='n4.html'">N4</button>
-    <button onclick="location.href='n3.html'">N3</button>
-    <button onclick="location.href='n2.html'">N2</button>
-    <button onclick="location.href='n1.html'">N1</button>
-    <button onclick="location.href='kanji.html'">Kanji</button>
+
+<button onclick="location.href='n5.html'">N5</button>
+<button onclick="location.href='n4.html'">N4</button>
+<button onclick="location.href='n3.html'">N3</button>
+<button onclick="location.href='n2.html'">N2</button>
+<button onclick="location.href='n1.html'">N1</button>
+<button onclick="location.href='kanji.html'">Kanji</button>
+
 </div>
 
 <p>
