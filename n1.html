@@ -5,88 +5,190 @@
 <meta charset="UTF-8">
 <title>N1 - ConteGiacJP</title>
 
+<link rel="icon" type="image/png" href="favicon.png">
+
 <style>
 
 body{
     margin:0;
     background:#F3F6FB;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
 }
 
-/* Thanh trên */
+/* ================= HEADER ================= */
 
-.top-bar{
+.header{
+
     display:flex;
-    justify-content:flex-end;
+    justify-content:space-between;
     align-items:center;
-    padding:20px 40px;
+
+    padding:25px 50px;
+
+    background:white;
+
+    border-bottom:3px solid #22c55e;
+
 }
 
-.top-bar a{
+.logo{
+
+    display:flex;
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.logo img{
+
+    width:95px;
+    height:auto;
+
+}
+
+.logo-text h1{
+
+    margin:0;
+
+    color:#16a34a;
+
+    font-size:44px;
+
+}
+
+.logo-text p{
+
+    margin:6px 0 0;
+
+    color:#666;
+
+    font-size:20px;
+
+}
+
+.home-btn{
+
     text-decoration:none;
-    background:#22c55e;
+
     color:white;
-    padding:12px 22px;
+
+    background:linear-gradient(135deg,#22c55e,#16a34a);
+
+    padding:18px 30px;
+
     border-radius:12px;
-    font-size:18px;
+
+    font-size:20px;
+
     font-weight:bold;
+
+    box-shadow:0 6px 16px rgba(34,197,94,.35);
+
     transition:.25s;
-    box-shadow:0 5px 15px rgba(34,197,94,.35);
+
 }
 
-.top-bar a:hover{
-    background:#16a34a;
+.home-btn:hover{
+
     transform:translateY(-2px);
+
 }
 
-/* Khung */
+/* ================= KHUNG ================= */
 
 .container{
+
     width:900px;
-    margin:40px auto;
+
+    margin:50px auto;
+
     background:white;
+
     border-radius:20px;
+
     padding:60px;
+
     box-shadow:0 0 25px rgba(0,0,0,.12);
+
     text-align:center;
+
 }
 
-h1{
+.page-title{
+
     color:#1E40AF;
+
     font-size:52px;
+
     margin-bottom:35px;
+
 }
 
-/* Nút tạo khóa học */
+/* ================= NÚT ================= */
 
 .create-btn{
+
     display:inline-block;
+
     text-decoration:none;
-    background:#22c55e;
+
+    background:linear-gradient(135deg,#22c55e,#16a34a);
+
     color:white;
+
     padding:15px 30px;
+
     border-radius:12px;
+
     font-size:20px;
+
     font-weight:bold;
+
     transition:.25s;
+
     box-shadow:0 5px 15px rgba(34,197,94,.35);
+
 }
 
 .create-btn:hover{
-    background:#16a34a;
+
     transform:translateY(-2px);
+
 }
 
-/* Danh sách khóa học */
+/* ================= DANH SÁCH ================= */
 
 .course-list{
+
     margin-top:45px;
+
+    border:2px dashed #d8e8d8;
+
+    border-radius:15px;
+
+    padding:60px 20px;
+
 }
 
 .empty{
-    color:#888;
-    font-size:22px;
-    margin-top:50px;
+
+    color:#666;
+
+    font-size:26px;
+
+    margin:0;
+
+}
+
+.empty2{
+
+    color:#999;
+
+    font-size:18px;
+
+    margin-top:15px;
+
 }
 
 </style>
@@ -95,13 +197,33 @@ h1{
 
 <body>
 
-<div class="top-bar">
-    <a href="index.html">🏠 Trang chủ</a>
+<div class="header">
+
+    <div class="logo">
+
+        <img src="logo.png" alt="ConteGiacJP">
+
+        <div class="logo-text">
+
+            <h1>ConteGiacJP</h1>
+
+            <p>Học tiếng Nhật theo cách của bạn!</p>
+
+        </div>
+
+    </div>
+
+    <a href="index.html" class="home-btn">
+        🏠 Về trang chủ
+    </a>
+
 </div>
 
 <div class="container">
 
-<h1>N1</h1>
+<h2 class="page-title">
+N1
+</h2>
 
 <a href="create-course.html" class="create-btn">
 ➕ Tạo khóa học
@@ -110,7 +232,11 @@ h1{
 <div class="course-list">
 
     <p class="empty">
-        Chưa có khóa học nào.
+        📚 Chưa có khóa học nào.
+    </p>
+
+    <p class="empty2">
+        Nhấn "Tạo khóa học" để bắt đầu.
     </p>
 
 </div>
