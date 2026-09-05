@@ -368,6 +368,80 @@ p{
 
 
 
+/* ================= THÔNG BÁO ================= */
+
+.message-popup{
+    display:none;
+    position:fixed;
+    z-index:9999;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.45);
+    justify-content:center;
+    align-items:center;
+}
+
+.message-box{
+    width:430px;
+    background:white;
+    border-radius:22px;
+    padding:35px 35px 30px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+    text-align:center;
+    animation:messagePop .25s ease;
+}
+
+@keyframes messagePop{
+
+    from{
+        transform:scale(.85);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+.message-icon{
+    font-size:55px;
+    margin-bottom:10px;
+}
+
+.message-title{
+    font-size:28px;
+    font-weight:bold;
+    color:#16A34A;
+    margin-bottom:15px;
+}
+
+.message-text{
+    font-size:17px;
+    line-height:28px;
+    color:#444;
+    margin-bottom:25px;
+}
+
+.message-ok{
+    width:150px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#22C55E;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.message-ok:hover{
+    background:#16A34A;
+}
+
 </style>
 
 </head>
@@ -501,6 +575,34 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
 
 </div>
 
+<!-- POPUP THÔNG BÁO -->
+
+<div id="message-popup" class="message-popup">
+
+    <div class="message-box">
+
+        <div class="message-icon" id="message-icon">
+            🎉
+        </div>
+
+        <div class="message-title" id="message-title">
+            Thành công!
+        </div>
+
+        <div class="message-text" id="message-text">
+        </div>
+
+        <button
+            class="message-ok"
+            onclick="closeMessage()"
+        >
+            OK
+        </button>
+
+    </div>
+
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
@@ -550,6 +652,30 @@ function togglePassword(){
 
 }
 
+function showMessage(icon, title, text, success = true){
+
+    document.getElementById("message-icon").textContent = icon;
+
+    document.getElementById("message-title").textContent = title;
+
+    document.getElementById("message-text").innerHTML = text;
+
+    document.getElementById("message-title").style.color =
+        success ? "#16A34A" : "#DC2626";
+
+    document.querySelector(".message-ok").style.background =
+        success ? "#22C55E" : "#EF4444";
+
+    document.getElementById("message-popup").style.display = "flex";
+
+}
+
+
+function closeMessage(){
+
+    document.getElementById("message-popup").style.display = "none";
+
+}
 
 /* ================= ĐĂNG KÝ ================= */
 
@@ -563,7 +689,18 @@ async function registerUser(){
 
     if(!username){
 
-        alert("Vui lòng nhập ID.");
+        if(!username){
+
+    showMessage(
+        "⚠️",
+        "THIẾU ID",
+        "Vui lòng nhập ID để tạo tài khoản.",
+        false
+    );
+
+    return;
+
+}
 
         return;
 
@@ -585,7 +722,7 @@ async function registerUser(){
 
     button.disabled = true;
 
-    button.textContent = "Đang tạo tài khoản...";
+    button.textContent = "Đang tạo tài khoản nè đợi xíu nha...";
 
 
     try{
@@ -675,14 +812,15 @@ async function registerUser(){
         }
 
 
-        alert(
-            "Đăng ký thành công!\n\n" +
-            "ID: " + username +
-            "\n\nChào mừng đến với ConteGiacJP!"
-        );
+     showMessage(
+    "🎉",
+    "ĐĂNG KÝ THÀNH CÔNG!",
+    "Chào mừng <b>" + username + "</b> đến với ConteGiacJP!<br><br>" +
+    "Tài khoản đã được tạo và đăng nhập thành công.",
+    true
+);
 
-
-        closeRegister();
+closeRegister();
 
 
     }
@@ -691,10 +829,13 @@ async function registerUser(){
 
         console.error(error);
 
-        alert(
-            error.message ||
-            "Có lỗi xảy ra. Vui lòng thử lại."
-        );
+       showMessage(
+    "⚠️",
+    "CÓ LỖI XẢY RA",
+    error.message ||
+    "Vui lòng thử lại.",
+    false
+);
 
     }
 
