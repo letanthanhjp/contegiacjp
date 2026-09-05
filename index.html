@@ -325,6 +325,30 @@ body{
     color:white;
 }
 
+.username-display{
+    color:#1E40AF;
+    font-size:16px;
+    font-weight:bold;
+    padding:12px 5px;
+    white-space:nowrap;
+}
+
+.logout-btn{
+    background:#EF4444;
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:12px 22px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+    transition:.25s;
+}
+
+.logout-btn:hover{
+    background:#DC2626;
+}
+
 /* ================= MAIN ================= */
 
 .box{
@@ -476,13 +500,17 @@ p{
 
     <div id="user-actions" style="display:none;">
 
-        <button class="login-btn" onclick="location.href='profile.html'">
-            👤 <span id="header-username"></span>
-        </button>
+    <div class="username-display">
+        👤 <span id="header-username"></span>
+    </div>
 
-        <button class="register-btn" onclick="location.href='profile.html'">
-            Hồ sơ
-        </button>
+    <button class="register-btn" onclick="location.href='profile.html'">
+        Hồ sơ
+    </button>
+
+    <button class="logout-btn" onclick="logoutUser()">
+        Đăng xuất
+    </button>
 
     </div>
 
@@ -728,6 +756,20 @@ const supabaseClient =
         SUPABASE_PUBLISHABLE_KEY
     );
 
+    async function logoutUser(){
+
+    const { error } =
+        await supabaseClient.auth.signOut();
+
+    if(error){
+        console.error(error);
+        alert("Không thể đăng xuất.");
+        return;
+    }
+
+    location.reload();
+
+}
 
 async function openRegister(){
 
