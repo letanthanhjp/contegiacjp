@@ -450,7 +450,7 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
             <input
                 type="text"
                 id="userid"
-                value="jp011"
+                value="user011"
             >
 
             <p class="note">
@@ -491,7 +491,7 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
                 ⏱ Chỉ mất khoảng 10 giây để tạo tài khoản.
             </p>
 
-            <button class="register-confirm">
+            <button class="register-confirm" onclick="registerUser()">
                 Đăng ký tài khoản
             </button>
 
@@ -501,7 +501,22 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+
+const SUPABASE_URL =
+    "https://tnqvuclzzyxnzfszajjh.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_i9uqZBOYC2rhsdIimNGmeQ_oPXOrTnq";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
 
 function openRegister(){
 
@@ -509,11 +524,13 @@ function openRegister(){
 
 }
 
+
 function closeRegister(){
 
     document.getElementById("register-popup").style.display="none";
 
 }
+
 
 function togglePassword(){
 
@@ -528,6 +545,164 @@ function togglePassword(){
     else{
 
         pw.type = "password";
+
+    }
+
+}
+
+
+/* ================= ĐĂNG KÝ ================= */
+
+async function registerUser(){
+
+    const username =
+        document.getElementById("userid").value.trim();
+
+    const passwordInput =
+        document.getElementById("password").value;
+
+    if(!username){
+
+        alert("Vui lòng nhập ID.");
+
+        return;
+
+    }
+
+
+    // Nếu bỏ trống password → password = ID
+
+    const finalPassword =
+        passwordInput.length > 0
+            ? passwordInput
+            : username;
+
+
+    // Khóa nút để tránh bấm nhiều lần
+
+    const button =
+        document.querySelector(".register-confirm");
+
+    button.disabled = true;
+
+    button.textContent = "Đang tạo tài khoản...";
+
+
+    try{
+
+        /* =================
+           GỌI EDGE FUNCTION
+        ================= */
+
+        const { data, error } =
+            await supabaseClient.functions.invoke(
+                "register-user",
+                {
+                    body: {
+                        username: username,
+                        password: passwordInput
+                    }
+                }
+            );
+
+
+        if(error){
+
+            let message =
+                "Không thể tạo tài khoản.";
+
+            try{
+
+                if(error.context){
+
+                    const errorData =
+                        await error.context.json();
+
+                    if(errorData.error){
+
+                        message = errorData.error;
+
+                    }
+
+                }
+
+            }
+            catch(e){
+
+                console.log(e);
+
+            }
+
+            throw new Error(message);
+
+        }
+
+
+        if(!data || !data.success){
+
+            throw new Error(
+                data?.error ||
+                "Tạo tài khoản thất bại."
+            );
+
+        }
+
+
+        /* =================
+           ĐĂNG NHẬP NGAY
+        ================= */
+
+        const internalEmail =
+            `${username}@contegiacjp.internal`;
+
+
+        const { error: loginError } =
+            await supabaseClient.auth.signInWithPassword({
+
+                email: internalEmail,
+
+                password: finalPassword
+
+            });
+
+
+        if(loginError){
+
+            throw new Error(
+                "Tạo tài khoản thành công nhưng đăng nhập tự động thất bại."
+            );
+
+        }
+
+
+        alert(
+            "Đăng ký thành công!\n\n" +
+            "ID: " + username +
+            "\n\nChào mừng đến với ConteGiacJP!"
+        );
+
+
+        closeRegister();
+
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            error.message ||
+            "Có lỗi xảy ra. Vui lòng thử lại."
+        );
+
+    }
+
+    finally{
+
+        button.disabled = false;
+
+        button.textContent = "Đăng ký tài khoản";
 
     }
 
