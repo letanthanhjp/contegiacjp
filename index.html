@@ -910,9 +910,8 @@ async function registerUser(){
     const passwordInput =
         document.getElementById("password").value;
 
-    if(!username){
-
-        if(!username){
+        
+if(!username){
 
     showMessage(
         "⚠️",
@@ -922,7 +921,6 @@ async function registerUser(){
     );
 
     return;
-
 }
 
         return;
@@ -1035,12 +1033,12 @@ async function registerUser(){
         }
 
 
-     showMessage(
+   showMessage(
     "🎉",
     "ĐĂNG KÝ THÀNH CÔNG!",
     "Chào mừng <b>" + username + "</b> đến với ConteGiacJP!<br><br>" +
-    "Tài khoản đã được tạo và đăng nhập thành công.",<br>
-    "Chúc bạn học tập thật tốt nhé"
+    "Tài khoản đã được tạo và đăng nhập thành công.<br><br>" +
+    "Chúc bạn học tập thật tốt nhé",
     true
 );
 
