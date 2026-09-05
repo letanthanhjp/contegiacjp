@@ -481,40 +481,7 @@ p{
 
 <!-- HEADER -->
 
-<div class="header">
-
-    <div id="guest-actions">
-
-        <button class="register-btn" onclick="openRegister()">
-            Đăng ký
-            <br>
-            <span style="font-size:12px;">(Mất 10 giây)</span>
-        </button>
-
-        <button class="login-btn" onclick="openLogin()">
-            Đăng nhập
-        </button>
-
-    </div>
-
-
-    <div id="user-actions" style="display:none;">
-
-    <div class="username-display">
-        👤 <span id="header-username"></span>
-    </div>
-
-    <button class="register-btn" onclick="location.href='profile.html'">
-        Hồ sơ
-    </button>
-
-    <button class="logout-btn" onclick="logoutUser()">
-        Đăng xuất
-    </button>
-
-    </div>
-
-</div>
+<div id="site-header"></div>
 
 <!-- MAIN -->
 
@@ -756,20 +723,7 @@ const supabaseClient =
         SUPABASE_PUBLISHABLE_KEY
     );
 
-    async function logoutUser(){
-
-    const { error } =
-        await supabaseClient.auth.signOut();
-
-    if(error){
-        console.error(error);
-        alert("Không thể đăng xuất.");
-        return;
-    }
-
-    location.reload();
-
-}
+  
 
 async function openRegister(){
 
@@ -1179,45 +1133,6 @@ closeRegister();
 
 }
 
-/* ================= CẬP NHẬT HEADER ================= */
-
-async function updateHeader(){
-
-    const {
-        data: { session }
-    } = await supabaseClient.auth.getSession();
-
-
-    const guestActions =
-        document.getElementById("guest-actions");
-
-    const userActions =
-        document.getElementById("user-actions");
-
-    const usernameElement =
-        document.getElementById("header-username");
-
-
-    // CHƯA ĐĂNG NHẬP
-    if(!session){
-
-        guestActions.style.display = "flex";
-        userActions.style.display = "none";
-
-        return;
-    }
-
-
-    // ĐÃ ĐĂNG NHẬP
-    const username =
-        session.user.user_metadata?.username || "User";
-
-    usernameElement.textContent = username;
-
-    guestActions.style.display = "none";
-    userActions.style.display = "flex";
-
-}
 
 
 /* KIỂM TRA KHI MỞ TRANG */
@@ -1234,6 +1149,8 @@ supabaseClient.auth.onAuthStateChange(function(){
 });
 
 </script>
+
+<script src="header.js"></script>
 
 </body>
 
