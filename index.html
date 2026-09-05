@@ -281,6 +281,13 @@ body{
     gap:15px;
 }
 
+#guest-actions,
+#user-actions{
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
 /* Đăng ký */
 
 .register-btn{
@@ -452,15 +459,32 @@ p{
 
 <div class="header">
 
-<button class="register-btn" onclick="openRegister()">
-Đăng ký
-<br>
-<span style="font-size:12px;">(Mất 10 giây)</span>
-</button>
+    <div id="guest-actions">
 
-<button class="login-btn" onclick="openLogin()">
-    Đăng nhập
-</button>
+        <button class="register-btn" onclick="openRegister()">
+            Đăng ký
+            <br>
+            <span style="font-size:12px;">(Mất 10 giây)</span>
+        </button>
+
+        <button class="login-btn" onclick="openLogin()">
+            Đăng nhập
+        </button>
+
+    </div>
+
+
+    <div id="user-actions" style="display:none;">
+
+        <button class="login-btn" onclick="location.href='profile.html'">
+            👤 <span id="header-username"></span>
+        </button>
+
+        <button class="register-btn" onclick="location.href='profile.html'">
+            Hồ sơ
+        </button>
+
+    </div>
 
 </div>
 
@@ -784,6 +808,14 @@ function toggleLoginPassword(){
 
 }
 
+/* ENTER ĐỂ ĐĂNG NHẬP */
+
+document.getElementById("login-password").addEventListener("keydown", function(event){
+    if(event.key === "Enter"){
+        event.preventDefault();
+        loginUser();
+    }
+});
 
 async function loginUser(){
 
@@ -1104,6 +1136,60 @@ closeRegister();
     }
 
 }
+
+/* ================= CẬP NHẬT HEADER ================= */
+
+async function updateHeader(){
+
+    const {
+        data: { session }
+    } = await supabaseClient.auth.getSession();
+
+
+    const guestActions =
+        document.getElementById("guest-actions");
+
+    const userActions =
+        document.getElementById("user-actions");
+
+    const usernameElement =
+        document.getElementById("header-username");
+
+
+    // CHƯA ĐĂNG NHẬP
+    if(!session){
+
+        guestActions.style.display = "flex";
+        userActions.style.display = "none";
+
+        return;
+    }
+
+
+    // ĐÃ ĐĂNG NHẬP
+    const username =
+        session.user.user_metadata?.username || "User";
+
+    usernameElement.textContent = username;
+
+    guestActions.style.display = "none";
+    userActions.style.display = "flex";
+
+}
+
+
+/* KIỂM TRA KHI MỞ TRANG */
+
+updateHeader();
+
+
+/* THEO DÕI TRẠNG THÁI ĐĂNG NHẬP */
+
+supabaseClient.auth.onAuthStateChange(function(){
+
+    updateHeader();
+
+});
 
 </script>
 

@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Hồ sơ - ConteGiacJP</title>
+
+<link rel="icon" type="image/png" href="favicon.png">
+
+<style>
+
+body{
+    margin:0;
+    background:#F3F6FB;
+    font-family:Arial;
+    color:#333;
+}
+
+
+/* ================= HEADER ================= */
+
+.header{
+    width:1000px;
+    margin:30px auto 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo-title{
+    color:#1E40AF;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.back-btn{
+    background:white;
+    color:#1E40AF;
+    border:2px solid #1E40AF;
+    border-radius:10px;
+    padding:10px 18px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+}
+
+.back-btn:hover{
+    background:#1E40AF;
+    color:white;
+}
+
+
+/* ================= PROFILE ================= */
+
+.profile-box{
+    width:700px;
+    margin:30px auto;
+    background:white;
+    padding:45px;
+    border-radius:20px;
+    box-shadow:0 0 25px rgba(0,0,0,.12);
+}
+
+.profile-box h1{
+    text-align:center;
+    color:#D97706;
+    margin-top:0;
+    margin-bottom:35px;
+}
+
+.avatar{
+    width:90px;
+    height:90px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    background:#EAFBF1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:42px;
+}
+
+.userid{
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+    color:#1E40AF;
+    margin-bottom:35px;
+}
+
+
+/* ================= FORM ================= */
+
+.form-group{
+    margin-bottom:25px;
+}
+
+.form-group label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:8px;
+    font-size:16px;
+}
+
+.form-group input{
+    width:100%;
+    box-sizing:border-box;
+    padding:14px;
+    border:1px solid #D5D5D5;
+    border-radius:10px;
+    font-size:16px;
+}
+
+.form-group input:focus{
+    outline:none;
+    border-color:#1E40AF;
+}
+
+
+/* ID không sửa được */
+
+.readonly{
+    background:#F3F4F6;
+    color:#777;
+    cursor:not-allowed;
+}
+
+
+/* ================= BUTTON ================= */
+
+.save-btn{
+    width:100%;
+    margin-top:10px;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#22C55E;
+    color:white;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.save-btn:hover{
+    background:#16A34A;
+}
+
+
+.password-btn{
+    width:100%;
+    margin-top:15px;
+    padding:15px;
+    border:2px solid #1E40AF;
+    border-radius:10px;
+    background:white;
+    color:#1E40AF;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.password-btn:hover{
+    background:#1E40AF;
+    color:white;
+}
+
+
+/* ================= MESSAGE ================= */
+
+.message{
+    display:none;
+    margin-top:20px;
+    padding:14px;
+    border-radius:10px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.success{
+    background:#DCFCE7;
+    color:#166534;
+}
+
+.error{
+    background:#FEE2E2;
+    color:#991B1B;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:800px){
+
+    .header{
+        width:90%;
+    }
+
+    .profile-box{
+        width:80%;
+    }
+
+}
+
+.avatar-wrapper{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.avatar{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    object-fit:cover;
+    background:#EAFBF1;
+    border:4px solid #EAFBF1;
+}
+
+.avatar-edit{
+    margin-top:10px;
+    color:#1E40AF;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.avatar-edit:hover{
+    text-decoration:underline;
+}
+
+.password-btn{
+    width:100%;
+    padding:14px;
+    border:2px solid #1E40AF;
+    border-radius:10px;
+    background:white;
+    color:#1E40AF;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.password-btn:hover{
+    background:#1E40AF;
+    color:white;
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<div class="header">
+
+    <div class="logo-title">
+        🦏 ConteGiacJP
+    </div>
+
+    <button
+        class="back-btn"
+        onclick="location.href='index.html'"
+    >
+        ← Trang chủ
+    </button>
+
+</div>
+
+
+<!-- ================= PROFILE ================= -->
+
+<div class="profile-box">
+
+    <h1>HỒ SƠ CỦA TÔI</h1>
+
+
+   <div class="avatar-wrapper">
+
+    <img
+        id="avatar-image"
+        class="avatar"
+        src=""
+        alt="Ảnh đại diện"
+    >
+
+    <div
+        class="avatar-edit"
+        onclick="document.getElementById('avatar-file').click()"
+    >
+        ✏️ Sửa hình ảnh
+    </div>
+
+    <input
+        type="file"
+        id="avatar-file"
+        accept="image/*"
+        style="display:none"
+        onchange="changeAvatar(event)"
+    >
+
+</div>
+
+
+    <div
+        class="userid"
+        id="display-username"
+    >
+        Đang tải...
+    </div>
+
+
+   <!-- ID -->
+
+<div class="form-group">
+
+    <label>ID</label>
+
+    <input
+        type="text"
+        id="username"
+        class="readonly"
+        readonly
+    >
+
+</div>
+
+
+<!-- CHANGE PASSWORD -->
+
+<div class="form-group">
+
+    <label>🔐 Mật khẩu</label>
+
+    <button
+        class="password-btn"
+        onclick="changePassword()"
+    >
+        🔐 Đổi mật khẩu
+    </button>
+
+</div>
+
+
+    <!-- EMAIL -->
+
+    <div class="form-group">
+
+        <label>Email</label>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Nhập email của bạn"
+        >
+
+    </div>
+
+
+    <!-- SĐT -->
+
+    <div class="form-group">
+
+        <label>Số điện thoại</label>
+
+        <input
+            type="tel"
+            id="phone"
+            placeholder="Nhập số điện thoại của bạn"
+        >
+
+    </div>
+
+
+    <!-- SAVE -->
+
+    <button
+        class="save-btn"
+        onclick="saveProfile()"
+    >
+        Lưu thay đổi
+    </button>
+
+
+   
+
+
+
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+
+</div>
+
+
+<!-- ================= SUPABASE ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+    "https://tnqvuclzzyxnzfszajjh.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_i9uqZBOYC2rhsdIimNGmeQ_oPXOrTnq";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* ================= LOAD PROFILE ================= */
+
+async function loadProfile(){
+
+    const {
+        data: {
+            user
+        }
+    } =
+        await supabaseClient.auth.getUser();
+
+
+    if(!user){
+
+        location.href = "index.html";
+
+        return;
+
+    }
+
+
+    const username =
+        user.user_metadata?.username || "";
+
+
+    document.getElementById("display-username").textContent =
+        username;
+
+    document.getElementById("username").value =
+        username;
+
+
+    document.getElementById("email").value =
+    user.user_metadata?.profile_email || "";
+
+     document.getElementById("phone").value =
+    user.user_metadata?.profile_phone || "";
+
+    const avatarImage =
+    document.getElementById("avatar-image");
+
+const avatarUrl =
+    user.user_metadata?.avatar_url;
+
+
+if(avatarUrl){
+
+    avatarImage.src =
+        avatarUrl + "?t=" + Date.now();
+
+}
+else{
+
+    avatarImage.src =
+        "data:image/svg+xml;charset=UTF-8," +
+        encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="90"
+                 height="90"
+                 viewBox="0 0 90 90">
+
+                <circle
+                    cx="45"
+                    cy="45"
+                    r="45"
+                    fill="#EAFBF1"/>
+
+                <text
+                    x="45"
+                    y="58"
+                    text-anchor="middle"
+                    font-size="42">
+                    👤
+                </text>
+
+            </svg>
+        `);
+
+}
+}
+
+
+
+/* ================= SAVE PROFILE ================= */
+
+async function saveProfile(){
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const phone =
+        document.getElementById("phone").value.trim();
+
+
+    const { data, error } =
+        await supabaseClient.auth.updateUser({
+
+            data:{
+
+                profile_email: email,
+
+                profile_phone: phone
+
+            }
+
+        });
+
+
+    if(error){
+
+        console.error(error);
+
+        showMessage(
+            "error",
+            "❌ Không thể lưu thông tin."
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "success",
+        "✅ Đã lưu thông tin thành công."
+    );
+
+}
+
+
+/* ================= CHANGE PASSWORD ================= */
+
+async function changePassword(){
+
+    const newPassword =
+        prompt("🔐 Nhập mật khẩu mới:");
+
+
+    if(newPassword === null){
+        return;
+    }
+
+
+    if(newPassword.length < 6){
+
+        showMessage(
+            "error",
+            "⚠️ Mật khẩu phải có ít nhất 6 ký tự."
+        );
+
+        return;
+    }
+
+
+    const confirmPassword =
+        prompt("🔐 Nhập lại mật khẩu mới:");
+
+
+    if(confirmPassword === null){
+        return;
+    }
+
+
+    if(newPassword !== confirmPassword){
+
+        showMessage(
+            "error",
+            "❌ Hai mật khẩu mới không giống nhau."
+        );
+
+        return;
+    }
+
+
+    const { error } =
+        await supabaseClient.auth.updateUser({
+
+            password: newPassword
+
+        });
+
+
+    if(error){
+
+        console.error(error);
+
+        showMessage(
+            "error",
+            "❌ " + error.message
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "success",
+        "✅ Đổi mật khẩu thành công!"
+    );
+
+}
+
+
+/* ================= MESSAGE ================= */
+
+function showMessage(type,text){
+
+    const message =
+        document.getElementById("message");
+
+
+    message.className =
+        "message " + type;
+
+
+    message.textContent =
+        text;
+
+
+    message.style.display =
+        "block";
+
+}
+
+
+/* ================= START ================= */
+
+loadProfile();
+
+async function changeAvatar(event){
+
+    const file = event.target.files[0];
+
+    if(!file){
+        return;
+    }
+
+
+    // Giới hạn 5MB
+    if(file.size > 5 * 1024 * 1024){
+
+        alert("Ảnh phải nhỏ hơn 5MB.");
+
+        return;
+    }
+
+
+    // Chỉ nhận ảnh
+    if(!file.type.startsWith("image/")){
+
+        alert("Vui lòng chọn file hình ảnh.");
+
+        return;
+    }
+
+
+    const {
+        data: { user },
+        error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if(userError || !user){
+
+        alert("Phiên đăng nhập đã hết.");
+
+        return;
+    }
+
+
+    /*
+     * Mỗi user có 1 file avatar cố định.
+     * Ví dụ:
+     * user-id/avatar
+     */
+    const filePath =
+        `${user.id}/avatar`;
+
+
+    const { error: uploadError } =
+        await supabaseClient.storage
+            .from("avatars")
+            .upload(
+                filePath,
+                file,
+                {
+                    upsert:true,
+                    contentType:file.type,
+                    cacheControl:"3600"
+                }
+            );
+
+
+    if(uploadError){
+
+        console.error(uploadError);
+
+        alert(
+            "Không thể tải ảnh lên.\n\n" +
+            uploadError.message
+        );
+
+        return;
+    }
+
+
+    /*
+     * Lấy URL ảnh
+     */
+    const {
+        data: publicUrlData
+    } =
+        supabaseClient.storage
+            .from("avatars")
+            .getPublicUrl(filePath);
+
+
+    const avatarUrl =
+        publicUrlData.publicUrl;
+
+
+    /*
+     * Lưu URL ảnh vào user metadata
+     */
+    const { error: updateError } =
+        await supabaseClient.auth.updateUser({
+
+            data:{
+                avatar_url: avatarUrl
+            }
+
+        });
+
+
+    if(updateError){
+
+        console.error(updateError);
+
+        alert(
+            "Ảnh đã tải lên nhưng chưa lưu được thông tin."
+        );
+
+        return;
+    }
+
+
+    /*
+     * Hiện ảnh ngay lập tức
+     */
+    document.getElementById("avatar-image").src =
+        avatarUrl + "?t=" + Date.now();
+
+
+    alert("✅ Đã đổi ảnh đại diện!");
+}
+
+</script>
+
+
+</body>
+
+</html>
