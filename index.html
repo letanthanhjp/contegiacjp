@@ -458,8 +458,8 @@ p{
 <span style="font-size:12px;">(Mất 10 giây)</span>
 </button>
 
-<button class="login-btn">
-Đăng nhập
+<button class="login-btn" onclick="openLogin()">
+    Đăng nhập
 </button>
 
 </div>
@@ -494,6 +494,91 @@ vì đã tìm thấy địa chỉ này.
 <p>
 Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
 </p>
+
+</div>
+
+<!-- POPUP ĐĂNG NHẬP -->
+
+<div id="login-popup" class="popup">
+
+    <div class="popup-box">
+
+        <!-- BÊN TRÁI -->
+        <div class="popup-left">
+
+            <img src="logo.png" alt="ConteGiacJP Logo">
+
+        </div>
+
+
+        <!-- BÊN PHẢI -->
+        <div class="popup-right">
+
+            <button class="close-x" onclick="closeLogin()">✕</button>
+
+            <h2>ĐĂNG NHẬP</h2>
+
+            <p>ID</p>
+
+            <input
+                type="text"
+                id="login-userid"
+                placeholder="Nhập ID của bạn"
+            >
+
+            <hr>
+
+            <p>Mật khẩu</p>
+
+            <div class="password-box">
+
+                <input
+                    type="password"
+                    id="login-password"
+                    placeholder="Nhập mật khẩu"
+                >
+
+                <button
+                    type="button"
+                    class="eye-btn"
+                    onclick="toggleLoginPassword()"
+                >
+                    👁
+                </button>
+
+            </div>
+
+            <p class="note">
+                <span
+                    style="cursor:pointer; color:#D97706; font-weight:bold;"
+                    onclick="showForgotPassword()"
+                >
+                    Quên mật khẩu?
+                </span>
+            </p>
+
+            <hr>
+
+            <button
+                class="register-confirm"
+                onclick="loginUser()"
+            >
+                Đăng nhập
+            </button>
+
+            <p class="note" style="margin-top:20px;">
+                Chưa có tài khoản?
+                <span
+                    style="cursor:pointer; color:#D97706; font-weight:bold;"
+                    onclick="switchToRegister()"
+                >
+                    Đăng ký ngay
+                </span>
+            </p>
+
+        </div>
+
+    </div>
 
 </div>
 
@@ -633,6 +718,144 @@ function closeRegister(){
 
 }
 
+/* ================= ĐĂNG NHẬP ================= */
+
+function openLogin(){
+
+    document.getElementById("login-popup").style.display="flex";
+
+}
+
+
+function closeLogin(){
+
+    document.getElementById("login-popup").style.display="none";
+
+}
+
+
+function toggleLoginPassword(){
+
+    let pw = document.getElementById("login-password");
+
+    if(pw.type == "password"){
+        pw.type = "text";
+    }
+    else{
+        pw.type = "password";
+    }
+
+}
+
+
+async function loginUser(){
+
+    const username =
+        document.getElementById("login-userid").value.trim();
+
+    const password =
+        document.getElementById("login-password").value;
+
+
+    if(!username){
+
+        showMessage(
+            "⚠️",
+            "THIẾU ID",
+            "Vui lòng nhập ID để đăng nhập.",
+            false
+        );
+
+        return;
+    }
+
+
+    if(!password){
+
+        showMessage(
+            "⚠️",
+            "THIẾU MẬT KHẨU",
+            "Vui lòng nhập mật khẩu.",
+            false
+        );
+
+        return;
+    }
+
+
+    const button =
+        document.querySelector("#login-popup .register-confirm");
+
+    button.disabled = true;
+
+    button.textContent = "Đang đăng nhập...";
+
+
+    try{
+
+        /*
+         * ID của ConteGiacJP được chuyển thành
+         * email nội bộ để Supabase Auth đăng nhập.
+         */
+
+        const internalEmail =
+            `${username}@contegiacjp.internal`;
+
+
+        const { data, error } =
+            await supabaseClient.auth.signInWithPassword({
+
+                email: internalEmail,
+
+                password: password
+
+            });
+
+
+        if(error){
+
+            throw new Error(
+                "ID hoặc mật khẩu không đúng."
+            );
+
+        }
+
+
+        showMessage(
+            "🎉",
+            "ĐĂNG NHẬP THÀNH CÔNG!",
+            "Chào mừng <b>" + username +
+            "</b> quay trở lại ConteGiacJP!",
+            true
+        );
+
+
+        closeLogin();
+
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "⚠️",
+            "ĐĂNG NHẬP THẤT BẠI",
+            error.message ||
+            "ID hoặc mật khẩu không đúng.",
+            false
+        );
+
+    }
+    finally{
+
+        button.disabled = false;
+
+        button.textContent = "Đăng nhập";
+
+    }
+
+}
 
 function togglePassword(){
 
@@ -816,7 +1039,8 @@ async function registerUser(){
     "🎉",
     "ĐĂNG KÝ THÀNH CÔNG!",
     "Chào mừng <b>" + username + "</b> đến với ConteGiacJP!<br><br>" +
-    "Tài khoản đã được tạo và đăng nhập thành công.",
+    "Tài khoản đã được tạo và đăng nhập thành công.",<br>
+    "Chúc bạn học tập thật tốt nhé"
     true
 );
 
