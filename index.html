@@ -607,10 +607,10 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
             <p>ID</p>
 
             <input
-                type="text"
-                id="userid"
-                value="user011"
-            >
+    type="text"
+    id="userid"
+    placeholder="Đang tìm ID..."
+>
 
             <p class="note">
                 Bạn có thể giữ ID này hoặc nhập ID khác tuỳ ý.
@@ -705,9 +705,46 @@ const supabaseClient =
     );
 
 
-function openRegister(){
+async function openRegister(){
 
     document.getElementById("register-popup").style.display="flex";
+
+    const userid =
+        document.getElementById("userid");
+
+    userid.value = "Đang tìm ID...";
+
+    try{
+
+        const { data, error } =
+            await supabaseClient.functions.invoke(
+                "register-user",
+                {
+                    body: {
+                        action: "suggest_username"
+                    }
+                }
+            );
+
+        if(error){
+            throw error;
+        }
+
+        if(!data || !data.username){
+            throw new Error("Không lấy được ID đề xuất.");
+        }
+
+        userid.value = data.username;
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        // Nếu không lấy được ID thì để trống
+        userid.value = "";
+
+    }
 
 }
 
@@ -936,7 +973,7 @@ if(!username){
     // Khóa nút để tránh bấm nhiều lần
 
     const button =
-        document.querySelector(".register-confirm");
+        document.querySelector("#register-popup .register-confirm");
 
     button.disabled = true;
 
