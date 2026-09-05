@@ -6,8 +6,263 @@
 <meta charset="UTF-8">
 
 <title>ConteGiacJP</title>
+<link rel="icon" type="image/png" href="favicon.png">
 
 <style>
+
+
+/* ================= POPUP ================= */
+
+.popup{
+
+    display:none;
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,.5);
+
+    justify-content:center;
+    align-items:center;
+
+}
+
+.popup-box{
+
+    width:980px;
+
+    min-height:560px;
+
+    background:white;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+
+}
+
+.popup-left{
+
+    width:35%;
+
+    background:linear-gradient(
+    to bottom,
+    #FFFFFF 0%,
+    #FFF9FB 30%,
+    #FFF0F5 70%,
+    #FDECEF 100%
+);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-right:1px solid #E5E7EB;
+
+    padding:30px;
+
+}
+
+.popup-left img{
+
+    width:220%;
+
+    max-width:350px;
+
+}
+
+
+.popup-right{
+
+    width:65%;
+
+    padding:45px;
+
+    position:relative;
+
+    background:linear-gradient(
+        to top,
+        #EAFBF1 0%,
+        #F5FDF8 40%,
+        #FFFFFF 100%
+    );
+
+}
+
+.popup-box h2{
+
+    margin-top:10px;
+
+    margin-bottom:35px;
+
+    color:#D97706;
+
+    font-size:34px;
+
+    text-align:center;
+
+}
+
+
+
+.popup-box input{
+
+    width:100%;
+
+    padding:14px;
+
+    font-size:16px;
+
+    border:1px solid #d5d5d5;
+
+    border-radius:10px;
+
+    box-sizing:border-box;
+
+    margin-top:8px;
+
+}
+
+.popup-box h2{
+
+    text-align:center;
+
+    color:#D97706;
+
+    margin-bottom:30px;
+
+}
+
+.popup-box p{
+
+    margin:10px 0 5px;
+
+    font-size:16px;
+
+    color:#333;
+
+}
+
+.note{
+
+    color:#777;
+
+    font-size:14px;
+
+    line-height:22px;
+
+    margin-top:8px;
+
+}
+
+.password-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.eye-btn{
+
+    width:55px;
+
+    height:48px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#EFEFEF;
+
+    cursor:pointer;
+
+    font-size:22px;
+
+}
+
+
+
+.register-confirm{
+
+    width:100%;
+
+    margin-top:25px;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#22C55E;
+
+    color:white;
+
+    font-size:19px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.close-x{
+
+    position:absolute;
+
+    top:18px;
+
+    right:20px;
+
+    background:none;
+
+    border:none;
+
+    font-size:30px;
+
+    cursor:pointer;
+
+    color:#999;
+
+}
+
+.close-x:hover{
+
+    color:red;
+
+}
+
+.register-confirm:hover{
+
+    background:#16A34A;
+
+}
+
+.popup-box hr{
+
+    border:none;
+
+    border-top:1px solid #e5e5e5;
+
+    margin:22px 0;
+
+}
+
+
 
 body{
     background:#F3F6FB;
@@ -111,6 +366,8 @@ p{
     color:white;
 }
 
+
+
 </style>
 
 </head>
@@ -121,7 +378,7 @@ p{
 
 <div class="header">
 
-<button class="register-btn">
+<button class="register-btn" onclick="openRegister()">
 Đăng ký
 <br>
 <span style="font-size:12px;">(Mất 10 giây)</span>
@@ -165,6 +422,118 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
 </p>
 
 </div>
+
+<!-- POPUP ĐĂNG KÝ -->
+
+<div id="register-popup" class="popup">
+
+    <div class="popup-box">
+
+        <!-- BÊN TRÁI -->
+
+        <div class="popup-left">
+
+            <img src="logo.png" alt="ConteGiacJP Logo">
+
+        </div>
+
+        <!-- BÊN PHẢI -->
+
+        <div class="popup-right">
+
+            <button class="close-x" onclick="closeRegister()">✕</button>
+
+            <h2>ĐĂNG KÝ TÀI KHOẢN</h2>
+
+            <p>ID</p>
+
+            <input
+                type="text"
+                id="userid"
+                value="jp011"
+            >
+
+            <p class="note">
+                Bạn có thể giữ ID này hoặc nhập ID khác.
+            </p>
+
+            <hr>
+
+            <p>Mật khẩu</p>
+
+            <div class="password-box">
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Để trống nếu muốn dùng ID"
+                >
+
+                <button
+                    type="button"
+                    class="eye-btn"
+                    onclick="togglePassword()"
+                >
+                    👁
+                </button>
+
+            </div>
+
+            <p class="note">
+                Nếu để trống, mật khẩu mặc định sẽ là ID.
+                <br>
+                Bạn có thể đổi mật khẩu bất cứ lúc nào sau này.
+            </p>
+
+            <hr>
+
+            <p class="note">
+                ⏱ Chỉ mất khoảng 10 giây để tạo tài khoản.
+            </p>
+
+            <button class="register-confirm">
+                Đăng ký tài khoản
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function openRegister(){
+
+    document.getElementById("register-popup").style.display="flex";
+
+}
+
+function closeRegister(){
+
+    document.getElementById("register-popup").style.display="none";
+
+}
+
+function togglePassword(){
+
+    let pw = document.getElementById("password");
+
+    if(pw.type == "password"){
+
+        pw.type = "text";
+
+    }
+
+    else{
+
+        pw.type = "password";
+
+    }
+
+}
+
+</script>
 
 </body>
 
