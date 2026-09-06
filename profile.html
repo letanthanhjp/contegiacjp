@@ -1391,21 +1391,125 @@ async function saveProfile(){
         document.getElementById("phone").value.trim();
 
 
-    const { data, error } =
-        await supabaseClient.auth.updateUser({
+    /* ================= KIỂM TRA EMAIL ================= */
 
+    if(!email){
+
+        showMessage(
+            "error",
+            "⚠️ Vui lòng nhập Email."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        /* ================= LẤY SESSION ================= */
+
+        const {
             data:{
-
-                profile_email: email,
-
-                profile_phone: phone
-
+                session
             }
+        } =
+            await supabaseClient.auth.getSession();
 
-        });
+
+        if(!session){
+
+            showMessage(
+                "error",
+                "❌ Phiên đăng nhập đã hết."
+            );
+
+            return;
+
+        }
 
 
-    if(error){
+        /* ================= CẬP NHẬT EMAIL AUTH ================= */
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.functions.invoke(
+                "register-user",
+                {
+                    body:{
+                        action:"update_email",
+                        email:email
+                    }
+                }
+            );
+
+
+        if(error){
+
+            console.error(error);
+
+            showMessage(
+                "error",
+                "❌ Không thể lưu Email."
+            );
+
+            return;
+
+        }
+
+
+        if(data?.error){
+
+            showMessage(
+                "error",
+                "❌ " + data.error
+            );
+
+            return;
+
+        }
+
+
+        /* ================= LƯU SỐ ĐIỆN THOẠI ================= */
+
+        const {
+            error:phoneError
+        } =
+            await supabaseClient.auth.updateUser({
+
+                data:{
+                    profile_phone:phone
+                }
+
+            });
+
+
+        if(phoneError){
+
+            console.error(phoneError);
+
+            showMessage(
+                "error",
+                "⚠️ Email đã được lưu nhưng không thể lưu số điện thoại."
+            );
+
+            return;
+
+        }
+
+
+        /* ================= THÀNH CÔNG ================= */
+
+        showMessage(
+            "success",
+            "✅ Đã lưu thông tin thành công."
+        );
+
+
+    }
+    catch(error){
 
         console.error(error);
 
@@ -1414,14 +1518,7 @@ async function saveProfile(){
             "❌ Không thể lưu thông tin."
         );
 
-        return;
     }
-
-
-    showMessage(
-        "success",
-        "✅ Đã lưu thông tin thành công."
-    );
 
 }
 

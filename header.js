@@ -100,8 +100,22 @@ document.addEventListener("DOMContentLoaded", function(){
                     Đang tải...
                 </span>
 
+<span
+        id="common-header-role"
+        style="
+            display:none;
+            margin-left:6px;
+            color:#D97706;
+            font-size:12px;
+            font-weight:bold;
+        "
+    >
+        [Admin]
+    </span>
+
             </div>
 
+  
 
             <button
                 class="common-profile-btn"
@@ -782,6 +796,34 @@ async function updateCommonHeader(){
         session.user.user_metadata?.username ||
         "User";
 
+const { data: userData, error: roleError } =
+    await supabaseClient
+        .from("users")
+        .select("role")
+        .eq("id", session.user.id)
+        .single();
+
+console.log("USER ID:", session.user.id);
+console.log("USER DATA:", userData);
+console.log("ROLE ERROR:", roleError);
+
+const roleElement =
+    document.getElementById("common-header-role");
+
+if(roleElement){
+
+    if(
+        userData &&
+        userData.role &&
+        userData.role.trim().toLowerCase() === "admin"
+    ){
+        roleElement.style.display = "inline";
+    }
+    else{
+        roleElement.style.display = "none";
+    }
+
+}
 
     if(usernameElement){
 
