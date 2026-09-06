@@ -40,77 +40,101 @@ document.addEventListener("DOMContentLoaded", function(){
 
         <div class="common-header-right">
 
-            <!-- CHƯA ĐĂNG NHẬP -->
+    <!-- NGÔN NGỮ -->
 
-            <div
-                id="common-guest-actions"
-                class="common-guest-actions"
-            >
+ <div class="common-language">
 
-                <button
-                    class="common-register-btn"
-                    onclick="openRegister()"
-                >
-                    Đăng ký
-                </button>
+    <span class="language-label">LAN:</span>
 
-                <button
-                    class="common-login-btn"
-                    onclick="openLogin()"
-                >
-                    Đăng nhập
-                </button>
+    <select
+        id="language-selector"
+        onchange="setLanguage(this.value)"
+    >
+        <option value="vi"> VN</option>
+        <option value="en"> ENG</option>
+    </select>
 
-            </div>
+</div>
 
 
-            <!-- ĐÃ ĐĂNG NHẬP -->
+    <!-- CỤM TÀI KHOẢN -->
 
-            <div
-                id="common-user-actions"
-                class="common-user-actions"
-            >
+    <div class="common-user-actions">
 
-                <div class="common-username">
+        <!-- CHƯA ĐĂNG NHẬP -->
 
-                    <span id="common-header-username">
-                        Đang tải...
-                    </span>
-
-                </div>
-
-
-                <button
-                    class="common-profile-btn"
-                    onclick="location.href='profile.html'"
-                >
-                    Hồ sơ
-                </button>
-
-
-                <button
-                    class="common-logout-btn"
-                    onclick="logoutUser()"
-                >
-                    Đăng xuất
-                </button>
-
-            </div>
-
-
-            <!-- TRANG CHỦ -->
+        <div
+            id="common-guest-actions"
+            class="common-guest-actions"
+        >
 
             <button
-                class="common-home-btn"
-                onclick="location.href='index.html'"
+               class="common-register-btn"
+                  onclick="openRegister()"
+               data-i18n="register"
+                >
+                Đăng ký
+                </button>
+
+            <button
+                class="common-login-btn"
+                onclick="openLogin()"
+                 data-i18n="login"
             >
-                🏠 Về trang chủ
+                Đăng nhập
             </button>
 
         </div>
 
+
+        <!-- ĐÃ ĐĂNG NHẬP -->
+
+        <div
+            id="common-logged-actions"
+            class="common-logged-actions"
+        >
+
+            <div class="common-username">
+
+                <span id="common-header-username">
+                    Đang tải...
+                </span>
+
+            </div>
+
+
+            <button
+                class="common-profile-btn"
+                onclick="location.href='profile.html'"
+            >
+                Hồ sơ
+            </button>
+
+
+            <button
+                class="common-logout-btn"
+                onclick="logoutUser()"
+                 data-i18n="logout"
+            >
+                Đăng xuất
+            </button>
+
+        </div>
+
+
+        <!-- TRANG CHỦ -->
+
+        <button
+            class="common-home-btn"
+            onclick="location.href='index.html'"
+            data-i18n="home"
+        >
+            🏠 Về trang chủ
+        </button>
+
     </div>
 
+</div>
 
     <!-- LOGOUT POPUP -->
 
@@ -125,7 +149,9 @@ document.addEventListener("DOMContentLoaded", function(){
                 ↪
             </div>
 
-            <h2>Đăng xuất</h2>
+            <h2 data-i18n="logout">
+             Đăng xuất
+         </h2>
 
             <p>
                 Bạn có chắc chắn muốn<br>
@@ -137,6 +163,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 <button
                     class="common-logout-cancel"
                     onclick="closeLogoutPopup()"
+                    data-i18n="cancel"
                 >
                     Hủy
                 </button>
@@ -144,6 +171,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 <button
                     class="common-logout-confirm"
                     onclick="confirmLogout()"
+                     data-i18n="logout"
                 >
                     Đăng xuất
                 </button>
@@ -226,13 +254,94 @@ document.addEventListener("DOMContentLoaded", function(){
 
         .common-header-right{
 
-            display:flex;
+    display:flex;
 
-            align-items:center;
+    flex-direction:column;
 
-            gap:10px;
+    align-items:flex-end;
 
-        }
+    gap:10px;
+
+}
+
+
+/* ================= NGÔN NGỮ ================= */
+
+.common-language{
+    display:flex;
+    justify-content:flex-end;
+    transform:translateY(-25px);
+}
+
+.language-label{
+    margin-right:6px;
+    font-size:13px;
+    font-weight:bold;
+    color:#1E40AF;
+    line-height:30px;
+}
+
+.common-language select{
+
+    padding:6px 10px;
+
+    border:1px solid #1E40AF;
+
+    border-radius:6px;
+
+    background:white;
+
+    color:#1E40AF;
+
+    font-size:13px;
+
+    cursor:pointer;
+
+    outline:none;
+
+}
+
+
+.common-language select:hover{
+
+    background:#EFF6FF;
+
+}
+
+
+/* ================= CỤM TÀI KHOẢN ================= */
+
+.common-user-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+
+.common-guest-actions{
+
+    display:none;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+
+.common-logged-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
 
 
         /* ================= GUEST ================= */
@@ -310,7 +419,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         .common-user-actions{
 
-            display:none;
+            display:flex;
 
             align-items:center;
 
@@ -603,6 +712,11 @@ document.addEventListener("DOMContentLoaded", function(){
 
     /* ================= UPDATE HEADER ================= */
 
+if(typeof applyLanguage === "function"){
+    applyLanguage();
+}
+
+
     updateCommonHeader();
 
 });
@@ -627,12 +741,10 @@ async function updateCommonHeader(){
             "common-guest-actions"
         );
 
-
-    const userActions =
+    const loggedActions =
         document.getElementById(
-            "common-user-actions"
+            "common-logged-actions"
         );
-
 
     const usernameElement =
         document.getElementById(
@@ -645,11 +757,17 @@ async function updateCommonHeader(){
     if(!session){
 
         if(guestActions){
-            guestActions.style.display = "flex";
+
+            guestActions.style.display =
+                "flex";
+
         }
 
-        if(userActions){
-            userActions.style.display = "none";
+        if(loggedActions){
+
+            loggedActions.style.display =
+                "none";
+
         }
 
         return;
@@ -680,9 +798,9 @@ async function updateCommonHeader(){
     }
 
 
-    if(userActions){
+    if(loggedActions){
 
-        userActions.style.display =
+        loggedActions.style.display =
             "flex";
 
     }
