@@ -389,6 +389,249 @@ body{
     font-weight:normal;
 }
 
+/* ================= CHANGE PASSWORD POPUP ================= */
+
+.password-popup{
+
+    display:none;
+
+    position:fixed;
+
+    z-index:99999;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,.45);
+
+    justify-content:center;
+    align-items:center;
+
+}
+
+
+.password-box{
+
+    width:500px;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:35px;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+
+}
+
+
+.password-box h2{
+
+    margin-top:0;
+
+    margin-bottom:30px;
+
+    text-align:center;
+
+    color:#1E40AF;
+
+    font-size:25px;
+
+}
+
+
+.password-group{
+
+    margin-bottom:20px;
+
+}
+
+
+.password-group label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:bold;
+
+    font-size:16px;
+
+    color:#333;
+
+}
+
+
+.password-input{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+
+.password-input input{
+
+    flex:1;
+
+    width:100%;
+
+    box-sizing:border-box;
+
+    padding:15px;
+
+    border:1px solid #D5D5D5;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+}
+
+
+.password-input input:focus{
+
+    outline:none;
+
+    border-color:#1E40AF;
+
+}
+
+
+.password-input button{
+
+    width:52px;
+
+    height:50px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#EFEFEF;
+
+    cursor:pointer;
+
+    font-size:20px;
+
+}
+
+
+.password-input button:hover{
+
+    background:#E0E0E0;
+
+}
+
+
+.password-error{
+
+    display:none;
+
+    margin-top:5px;
+
+    margin-bottom:15px;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    background:#FEE2E2;
+
+    color:#991B1B;
+
+    font-size:14px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+}
+
+
+.password-actions{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:12px;
+
+    margin-top:25px;
+
+}
+
+
+.password-cancel,
+.password-confirm{
+
+    padding:13px 28px;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+.password-cancel{
+
+    background:white;
+
+    color:#1E40AF;
+
+    border:2px solid #1E40AF;
+
+}
+
+
+.password-cancel:hover{
+
+    background:#EFF6FF;
+
+}
+
+
+.password-confirm{
+
+    background:#22C55E;
+
+    color:white;
+
+    border:none;
+
+}
+
+
+.password-confirm:hover{
+
+    background:#16A34A;
+
+}
+
+
+@media(max-width:600px){
+
+    .password-box{
+
+        width:85%;
+
+        padding:25px;
+
+    }
+
+}
+
 </style>
 
 </head>
@@ -535,7 +778,120 @@ body{
 
 </div>
 
+<!-- ================= CHANGE PASSWORD POPUP ================= -->
 
+<div id="password-popup" class="password-popup">
+
+    <div class="password-box">
+
+        <h2>🔐 ĐỔI MẬT KHẨU</h2>
+
+
+        <!-- MẬT KHẨU CŨ -->
+
+        <div class="password-group">
+
+            <label>Mật khẩu hiện tại</label>
+
+            <div class="password-input">
+
+                <input
+                    type="password"
+                    id="old-password"
+                    placeholder="Nhập mật khẩu hiện tại"
+                >
+
+                <button
+                    type="button"
+                    onclick="togglePassword('old-password')"
+                >
+                    👁
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- MẬT KHẨU MỚI -->
+
+        <div class="password-group">
+
+            <label>Mật khẩu mới</label>
+
+            <div class="password-input">
+
+                <input
+                    type="password"
+                    id="new-password"
+                    placeholder="Nhập mật khẩu mới"
+                >
+
+                <button
+                    type="button"
+                    onclick="togglePassword('new-password')"
+                >
+                    👁
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- XÁC NHẬN -->
+
+        <div class="password-group">
+
+            <label>Xác nhận mật khẩu mới</label>
+
+            <div class="password-input">
+
+                <input
+                    type="password"
+                    id="confirm-password"
+                    placeholder="Nhập lại mật khẩu mới"
+                >
+
+                <button
+                    type="button"
+                    onclick="togglePassword('confirm-password')"
+                >
+                    👁
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="password-error"
+            class="password-error"
+        ></div>
+
+
+        <div class="password-actions">
+
+            <button
+                class="password-cancel"
+                onclick="closePasswordPopup()"
+            >
+                Hủy
+            </button>
+
+            <button
+                class="password-confirm"
+                onclick="confirmChangePassword()"
+            >
+                Đổi mật khẩu
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 <!-- ================= SUPABASE ================= -->
 
@@ -688,73 +1044,271 @@ async function saveProfile(){
 
 /* ================= CHANGE PASSWORD ================= */
 
-async function changePassword(){
+/* ================= ĐỔI MẬT KHẨU ================= */
+
+function changePassword(){
+
+    document.getElementById("old-password").value = "";
+    document.getElementById("new-password").value = "";
+    document.getElementById("confirm-password").value = "";
+
+    document.getElementById("password-error").style.display = "none";
+
+    document.getElementById("password-popup").style.display = "flex";
+
+}
+
+
+/* ================= ĐÓNG POPUP ================= */
+
+function closePasswordPopup(){
+
+    document.getElementById("password-popup").style.display = "none";
+
+}
+
+
+/* ================= HIỆN / ẨN MẬT KHẨU ================= */
+
+function togglePassword(id){
+
+    const input = document.getElementById(id);
+
+    if(input.type === "password"){
+
+        input.type = "text";
+
+    }
+    else{
+
+        input.type = "password";
+
+    }
+
+}
+
+
+/* ================= BÁO LỖI ================= */
+
+function showPasswordError(message){
+
+    const error =
+        document.getElementById("password-error");
+
+    error.textContent = message;
+
+    error.style.display = "block";
+
+}
+
+
+/* ================= XÁC NHẬN ĐỔI ================= */
+
+async function confirmChangePassword(){
+
+    const oldPassword =
+        document.getElementById("old-password").value;
 
     const newPassword =
-        prompt("🔐 Nhập mật khẩu mới:");
+        document.getElementById("new-password").value;
+
+    const confirmPassword =
+        document.getElementById("confirm-password").value;
 
 
-    if(newPassword === null){
+    /* KIỂM TRA MẬT KHẨU CŨ */
+
+    if(!oldPassword){
+
+        showPasswordError(
+            "⚠️ Vui lòng nhập mật khẩu hiện tại."
+        );
+
         return;
+
+    }
+
+
+    /* KIỂM TRA MẬT KHẨU MỚI */
+
+    if(!newPassword){
+
+        showPasswordError(
+            "⚠️ Vui lòng nhập mật khẩu mới."
+        );
+
+        return;
+
     }
 
 
     if(newPassword.length < 6){
 
-        showMessage(
-            "error",
-            "⚠️ Mật khẩu phải có ít nhất 6 ký tự."
+        showPasswordError(
+            "⚠️ Mật khẩu mới phải có ít nhất 6 ký tự."
         );
 
         return;
+
     }
 
 
-    const confirmPassword =
-        prompt("🔐 Nhập lại mật khẩu mới:");
-
-
-    if(confirmPassword === null){
-        return;
-    }
-
+    /* SO SÁNH 2 MẬT KHẨU */
 
     if(newPassword !== confirmPassword){
 
-        showMessage(
-            "error",
-            "❌ Hai mật khẩu mới không giống nhau."
+        showPasswordError(
+            "❌ Mật khẩu mới và xác nhận mật khẩu không giống nhau."
         );
 
         return;
+
     }
 
 
-    const { error } =
-        await supabaseClient.auth.updateUser({
+    /* KHÔNG CHO ĐẶT MẬT KHẨU MỚI GIỐNG CŨ */
 
-            password: newPassword
+    if(oldPassword === newPassword){
 
-        });
+        showPasswordError(
+            "⚠️ Mật khẩu mới phải khác mật khẩu hiện tại."
+        );
+
+        return;
+
+    }
 
 
-    if(error){
+    /* XÁC NHẬN */
+
+    const confirmed =
+        confirm(
+            "Bạn có chắc chắn muốn đổi mật khẩu không?"
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    try{
+
+        /* LẤY USER HIỆN TẠI */
+
+        const {
+            data:{
+                user
+            },
+            error:userError
+        } =
+            await supabaseClient.auth.getUser();
+
+
+        if(userError || !user){
+
+            throw new Error(
+                "Phiên đăng nhập đã hết."
+            );
+
+        }
+
+
+        /* LẤY USERNAME */
+
+        const username =
+            user.user_metadata?.username;
+
+
+        if(!username){
+
+            throw new Error(
+                "Không xác định được ID đăng nhập."
+            );
+
+        }
+
+
+        /*
+         * XÁC NHẬN MẬT KHẨU CŨ
+         *
+         * ConteGiacJP dùng email nội bộ
+         * username@contegiacjp.internal
+         */
+
+        const internalEmail =
+            `${username}@contegiacjp.internal`;
+
+
+        const {
+            error:loginError
+        } =
+            await supabaseClient.auth.signInWithPassword({
+
+                email:internalEmail,
+
+                password:oldPassword
+
+            });
+
+
+        if(loginError){
+
+            showPasswordError(
+                "❌ Mật khẩu hiện tại không đúng."
+            );
+
+            return;
+
+        }
+
+
+        /* ĐỔI MẬT KHẨU */
+
+        const {
+            error:updateError
+        } =
+            await supabaseClient.auth.updateUser({
+
+                password:newPassword
+
+            });
+
+
+        if(updateError){
+
+            throw updateError;
+
+        }
+
+
+        /* ĐÓNG POPUP */
+
+        closePasswordPopup();
+
+
+        /* THÔNG BÁO */
+
+        showMessage(
+            "success",
+            "✅ Đổi mật khẩu thành công!"
+        );
+
+    }
+    catch(error){
 
         console.error(error);
 
-        showMessage(
-            "error",
-            "❌ " + error.message
+        showPasswordError(
+            "❌ " + (
+                error.message ||
+                "Không thể đổi mật khẩu."
+            )
         );
 
-        return;
     }
-
-
-    showMessage(
-        "success",
-        "✅ Đổi mật khẩu thành công!"
-    );
 
 }
 
