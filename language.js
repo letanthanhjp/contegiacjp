@@ -277,11 +277,75 @@ const translations = {
             "The image was uploaded but the information could not be saved.",
 
         "✅ Đã đổi ảnh đại diện!":
-            "✅ Profile picture changed successfully!"
+            "✅ Profile picture changed successfully!",
+
+        "Email đã đăng ký tài khoản:": "Registered account email:",
+"Nhập Email vào đây": "Enter your email here",
+"ĐĂNG NHẬP": "LOGIN",
+"Quên mật khẩu?": "Forgot password?",
+"Chưa có tài khoản?": "Don't have an account?",
+"Đăng ký ngay (mất 10 giây)": "Register now (only 10 seconds)",
+"Nhập ID của bạn": "Input Your Login ID",
+"Nhập mật khẩu": "Input password here",
+
+"ĐĂNG KÝ TÀI KHOẢN": "CREATE ACCOUNT",
+"Bạn có thể giữ ID này hoặc nhập ID khác tùy ý.": "You can keep this ID or enter another ID.",
+"Để trống thì password là ID": "If left blank, the password will be the ID.",
+"Nếu để trống, mật khẩu mặc định sẽ là ID.": "If left blank, the default password will be the ID.",
+"Bạn có thể đổi mật khẩu bất cứ lúc nào sau này.": "You can change your password anytime later.",
+"⏱ Chỉ mất khoảng 10 giây để tạo tài khoản.": "⏱ It only takes about 10 seconds to create an account.",
+"Đăng ký tài khoản": "Create Account",
+"Bạn có thể giữ ID này hoặc nhập ID khác tuỳ ý.": "You can keep this ID or enter another ID.",
+"ĐĂNG KÝ THÀNH CÔNG!": "REGISTRATION SUCCESSFUL!",
+"Chào mừng": "Welcome",
+"đến với ConteGiacJP!": "to ConteGiacJP!",
+"Tài khoản đã được tạo và đăng nhập thành công.": "Your account has been created and you are now logged in.",
+"Chúc bạn học tập thật tốt nhé": "Happy learning!",
+ 
+"Bạn có chắc chắn muốn": "Are you sure you want",
+"đăng xuất tài khoản không?": "log out of your account?",
+"Hủy": "Cancel",
+
+"ĐĂNG NHẬP THÀNH CÔNG!": "LOGIN SUCCESSFUL!",
+"Chào mừng": "Welcome",
+"quay trở lại ConteGiacJP!": "back to ConteGiacJP!",
+
     }
 
 };
 
+/* =====================================================
+   TỰ ĐỘNG TẠO BẢN DỊCH 2 CHIỀU
+   ===================================================== */
+
+Object.keys(translations.en).forEach(function(vietnamese){
+
+    const english =
+        translations.en[vietnamese];
+
+    if(
+        translations.vi[english] === undefined
+    ){
+        translations.vi[english] =
+            vietnamese;
+    }
+
+});
+
+
+Object.keys(translations.vi).forEach(function(english){
+
+    const vietnamese =
+        translations.vi[english];
+
+    if(
+        translations.en[vietnamese] === undefined
+    ){
+        translations.en[vietnamese] =
+            english;
+    }
+
+});
 
 /* =====================================================
    NGÔN NGỮ HIỆN TẠI

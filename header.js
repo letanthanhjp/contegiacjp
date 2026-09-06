@@ -712,12 +712,13 @@ document.addEventListener("DOMContentLoaded", function(){
 
     /* ================= UPDATE HEADER ================= */
 
-if(typeof applyLanguage === "function"){
-    applyLanguage();
-}
 
 
     updateCommonHeader();
+
+    if(typeof applyLanguage === "function"){
+    applyLanguage();
+}
 
 });
 

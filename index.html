@@ -575,6 +575,21 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
                     Quên mật khẩu?
                 </span>
             </p>
+              
+              <!-- Ô QUÊN MẬT KHẨU -->
+<div id="forgot-password-box" style="display:none; margin-top:10px;">
+
+    <p style="margin-bottom:8px;">
+        Email đã đăng ký tài khoản:
+    </p>
+
+    <input
+        type="email"
+        id="forgot-email"
+        placeholder="Nhập Email vào đây"
+    >
+
+</div>
 
             <hr>
 
@@ -591,7 +606,7 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
                     style="cursor:pointer; color:#D97706; font-weight:bold;"
                     onclick="switchToRegister()"
                 >
-                    Đăng ký ngay
+                    Đăng ký ngay (mất 10 giây)
                 </span>
             </p>
 
@@ -768,6 +783,13 @@ async function openRegister(){
 
 }
 
+function switchToRegister(){
+
+    document.getElementById("login-popup").style.display = "none";
+
+    document.getElementById("register-popup").style.display = "flex";
+
+}
 
 function closeRegister(){
 
@@ -783,10 +805,17 @@ function openLogin(){
 
 }
 
+function showForgotPassword(){
+
+    document.getElementById("forgot-password-box").style.display = "block";
+
+}
 
 function closeLogin(){
 
-    document.getElementById("login-popup").style.display="none";
+    document.getElementById("login-popup").style.display = "none";
+
+    document.getElementById("forgot-password-box").style.display = "none";
 
 }
 
@@ -894,6 +923,11 @@ async function loginUser(){
             true
         );
 
+        setTimeout(function(){
+
+    closeMessage();
+
+}, 800);
 
         closeLogin();
 
