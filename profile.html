@@ -583,6 +583,156 @@ body{
 
 }
 
+/* ================= PASSWORD CONFIRM POPUP ================= */
+
+.password-confirm-popup{
+
+    display:none;
+
+    position:fixed;
+
+    z-index:100000;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,.45);
+
+    justify-content:center;
+    align-items:center;
+
+}
+
+
+.password-confirm-box{
+
+    width:420px;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:35px;
+
+    text-align:center;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+
+}
+
+
+.password-confirm-icon{
+
+    width:65px;
+    height:65px;
+
+    margin:0 auto 15px;
+
+    border-radius:50%;
+
+    background:#EFF6FF;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:32px;
+
+}
+
+
+.password-confirm-box h2{
+
+    margin:10px 0 12px;
+
+    color:#1E40AF;
+
+    font-size:23px;
+
+}
+
+
+.password-confirm-box p{
+
+    margin:0 0 28px;
+
+    color:#666;
+
+    font-size:16px;
+
+    line-height:1.6;
+
+}
+
+
+.password-confirm-actions{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:12px;
+
+}
+
+
+.password-confirm-cancel,
+.password-confirm-ok{
+
+    min-width:120px;
+
+    padding:12px 22px;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+.password-confirm-cancel{
+
+    background:white;
+
+    color:#1E40AF;
+
+    border:2px solid #1E40AF;
+
+}
+
+
+.password-confirm-cancel:hover{
+
+    background:#EFF6FF;
+
+}
+
+
+.password-confirm-ok{
+
+    background:#22C55E;
+
+    color:white;
+
+    border:none;
+
+}
+
+
+.password-confirm-ok:hover{
+
+    background:#16A34A;
+
+}
+
 
 .password-cancel{
 
@@ -893,6 +1043,46 @@ body{
 
 </div>
 
+<!-- ================= CONFIRM PASSWORD POPUP ================= -->
+
+<div id="password-confirm-popup" class="password-confirm-popup">
+
+    <div class="password-confirm-box">
+
+        <div class="password-confirm-icon">
+            🔐
+        </div>
+
+        <h2>
+            Xác nhận đổi mật khẩu
+        </h2>
+
+        <p>
+            Bạn có chắc chắn muốn đổi mật khẩu không?
+        </p>
+
+        <div class="password-confirm-actions">
+
+            <button
+                class="password-confirm-cancel"
+                onclick="closePasswordConfirmPopup()"
+            >
+                Hủy
+            </button>
+
+            <button
+                class="password-confirm-ok"
+                onclick="executePasswordChange()"
+            >
+                Xác nhận
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
 <!-- ================= SUPABASE ================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1102,7 +1292,9 @@ function showPasswordError(message){
 }
 
 
-/* ================= XÁC NHẬN ĐỔI ================= */
+/* ================= KIỂM TRA & XÁC NHẬN ĐỔI MẬT KHẨU ================= */
+
+/* ================= KIỂM TRA & XÁC NHẬN ĐỔI MẬT KHẨU ================= */
 
 async function confirmChangePassword(){
 
@@ -1116,7 +1308,7 @@ async function confirmChangePassword(){
         document.getElementById("confirm-password").value;
 
 
-    /* KIỂM TRA MẬT KHẨU CŨ */
+    /* ================= KIỂM TRA MẬT KHẨU CŨ ================= */
 
     if(!oldPassword){
 
@@ -1129,7 +1321,7 @@ async function confirmChangePassword(){
     }
 
 
-    /* KIỂM TRA MẬT KHẨU MỚI */
+    /* ================= KIỂM TRA MẬT KHẨU MỚI ================= */
 
     if(!newPassword){
 
@@ -1153,7 +1345,7 @@ async function confirmChangePassword(){
     }
 
 
-    /* SO SÁNH 2 MẬT KHẨU */
+    /* ================= SO SÁNH ================= */
 
     if(newPassword !== confirmPassword){
 
@@ -1166,7 +1358,7 @@ async function confirmChangePassword(){
     }
 
 
-    /* KHÔNG CHO ĐẶT MẬT KHẨU MỚI GIỐNG CŨ */
+    /* ================= KHÔNG TRÙNG MẬT KHẨU CŨ ================= */
 
     if(oldPassword === newPassword){
 
@@ -1179,24 +1371,9 @@ async function confirmChangePassword(){
     }
 
 
-    /* XÁC NHẬN */
-
-    const confirmed =
-        confirm(
-            "Bạn có chắc chắn muốn đổi mật khẩu không?"
-        );
-
-
-    if(!confirmed){
-
-        return;
-
-    }
-
-
     try{
 
-        /* LẤY USER HIỆN TẠI */
+        /* ================= LẤY USER ================= */
 
         const {
             data:{
@@ -1209,14 +1386,16 @@ async function confirmChangePassword(){
 
         if(userError || !user){
 
-            throw new Error(
-                "Phiên đăng nhập đã hết."
+            showPasswordError(
+                "❌ Phiên đăng nhập đã hết."
             );
+
+            return;
 
         }
 
 
-        /* LẤY USERNAME */
+        /* ================= LẤY USERNAME ================= */
 
         const username =
             user.user_metadata?.username;
@@ -1224,23 +1403,26 @@ async function confirmChangePassword(){
 
         if(!username){
 
-            throw new Error(
-                "Không xác định được ID đăng nhập."
+            showPasswordError(
+                "❌ Không xác định được ID đăng nhập."
             );
+
+            return;
 
         }
 
 
         /*
-         * XÁC NHẬN MẬT KHẨU CŨ
-         *
          * ConteGiacJP dùng email nội bộ
+         *
          * username@contegiacjp.internal
          */
 
         const internalEmail =
             `${username}@contegiacjp.internal`;
 
+
+        /* ================= KIỂM TRA MẬT KHẨU CŨ ================= */
 
         const {
             error:loginError
@@ -1254,6 +1436,8 @@ async function confirmChangePassword(){
             });
 
 
+        /* ================= MẬT KHẨU CŨ SAI ================= */
+
         if(loginError){
 
             showPasswordError(
@@ -1265,10 +1449,61 @@ async function confirmChangePassword(){
         }
 
 
-        /* ĐỔI MẬT KHẨU */
+        /*
+         * TỚI ĐÂY NGHĨA LÀ:
+         *
+         * Mật khẩu cũ đúng
+         * Mật khẩu mới hợp lệ
+         * Hai mật khẩu mới giống nhau
+         *
+         * → MỚI HIỆN POPUP XÁC NHẬN
+         */
+
+        document.getElementById(
+            "password-confirm-popup"
+        ).style.display = "flex";
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        showPasswordError(
+            "❌ " +
+            (
+                error.message ||
+                "Không thể kiểm tra mật khẩu."
+            )
+        );
+
+    }
+
+}
+
+
+/* ================= ĐÓNG POPUP XÁC NHẬN ================= */
+
+function closePasswordConfirmPopup(){
+
+    document.getElementById(
+        "password-confirm-popup"
+    ).style.display = "none";
+
+}
+
+
+/* ================= THỰC HIỆN ĐỔI MẬT KHẨU ================= */
+
+async function executePasswordChange(){
+
+    const newPassword =
+        document.getElementById("new-password").value;
+
+
+    try{
 
         const {
-            error:updateError
+            error
         } =
             await supabaseClient.auth.updateUser({
 
@@ -1277,19 +1512,29 @@ async function confirmChangePassword(){
             });
 
 
-        if(updateError){
+        if(error){
 
-            throw updateError;
+            console.error(error);
+
+            closePasswordConfirmPopup();
+
+            showPasswordError(
+                "❌ " + error.message
+            );
+
+            return;
 
         }
 
 
-        /* ĐÓNG POPUP */
+        /* ================= ĐÓNG CẢ 2 POPUP ================= */
+
+        closePasswordConfirmPopup();
 
         closePasswordPopup();
 
 
-        /* THÔNG BÁO */
+        /* ================= THÔNG BÁO ================= */
 
         showMessage(
             "success",
@@ -1301,8 +1546,11 @@ async function confirmChangePassword(){
 
         console.error(error);
 
+        closePasswordConfirmPopup();
+
         showPasswordError(
-            "❌ " + (
+            "❌ " +
+            (
                 error.message ||
                 "Không thể đổi mật khẩu."
             )
