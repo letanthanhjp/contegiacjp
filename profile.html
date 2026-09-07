@@ -1499,60 +1499,42 @@ if(!currentUser){
 }
 
 
-/* ================= LƯU VÀO USERS ================= */
+/* ================= LƯU SĐT ================= */
 
 const {
+    data: phoneData,
     error: phoneError
-} =
-    await supabaseClient
-        .from("users")
-        .update({
-            phone: phone
-        })
-        .eq("id", currentUser.id);
+} = await supabaseClient.functions.invoke(
+    "register-user",
+    {
+        body:{
+            action:"update_phone",
+            phone:phone
+        }
+    }
+);
 
 
 if(phoneError){
 
     console.error("PHONE ERROR:", phoneError);
 
-    let detail = "Không xác định được lỗi.";
-
-    try{
-
-        if(phoneError.context){
-
-            const errorData =
-                await phoneError.context.json();
-
-            console.error(
-                "PHONE FUNCTION ERROR:",
-                errorData
-            );
-
-            if(errorData?.error){
-                detail = errorData.error;
-            }
-
-        }
-
-    }
-    catch(e){
-
-        console.error(
-            "Không đọc được lỗi Function:",
-            e
-        );
-
-    }
-
     showMessage(
         "error",
-        "⚠️ Email đã lưu nhưng SĐT lỗi: " + detail
+        "❌ Không thể lưu số điện thoại."
     );
 
     return;
+}
 
+if(phoneData?.error){
+
+    showMessage(
+        "error",
+        "❌ " + phoneData.error
+    );
+
+    return;
 }
 
 
@@ -1583,60 +1565,8 @@ if(metadataPhoneError){
 
 }
 
-        if(phoneError){
+      
 
-    console.error("PHONE ERROR:", phoneError);
-
-    let detail = "Không xác định được lỗi.";
-
-    try{
-
-        if(phoneError.context){
-
-            const errorData =
-                await phoneError.context.json();
-
-            console.error(
-                "PHONE FUNCTION ERROR:",
-                errorData
-            );
-
-            if(errorData?.error){
-                detail = errorData.error;
-            }
-
-        }
-
-    }
-    catch(e){
-
-        console.error(
-            "Không đọc được lỗi Function:",
-            e
-        );
-
-    }
-
-    showMessage(
-        "error",
-        "⚠️ Email đã lưu nhưng SĐT lỗi: " + detail
-    );
-
-    return;
-
-}
-
-
-        if(phoneData?.error){
-
-            showMessage(
-                "error",
-                "❌ " + phoneData.error
-            );
-
-            return;
-
-        }
 
 
         /* ================= THÀNH CÔNG ================= */

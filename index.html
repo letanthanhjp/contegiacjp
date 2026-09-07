@@ -543,8 +543,7 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
                 type="text"
                 id="login-userid"
                 placeholder="Nhập ID, Email hoặc Số điện thoại đã đăng ký"
-                autocomplete="username"
-    spellcheck="false"
+                
             >
 
             <hr>
@@ -556,9 +555,7 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
                 <input
                     type="password"
                     id="login-password"
-                    placeholder="Nhập mật khẩu "
-                    autocomplete="current-password"
-
+                    placeholder="Nhập mật khẩu"
                 >
 
                 <button
@@ -742,78 +739,7 @@ const supabaseClient =
         SUPABASE_PUBLISHABLE_KEY
     );
 
-  /* =================================================
-   NHẬP KÝ TỰ KHÔNG QUA UNIKEY
-   DÙNG CHO ID / EMAIL / SĐT / PASSWORD
-   ================================================= */
-
-function forceEnglishInput(event){
-
-    /* Cho phép các phím điều khiển */
-    if(
-        event.ctrlKey ||
-        event.altKey ||
-        event.metaKey ||
-        event.key === "Backspace" ||
-        event.key === "Delete" ||
-        event.key === "ArrowLeft" ||
-        event.key === "ArrowRight" ||
-        event.key === "ArrowUp" ||
-        event.key === "ArrowDown" ||
-        event.key === "Home" ||
-        event.key === "End" ||
-        event.key === "Tab"
-    ){
-
-        return;
-
-    }
-
-
-    /* Chỉ xử lý ký tự ASCII có thể gõ */
-    if(
-        event.key.length === 1 &&
-        event.key.charCodeAt(0) <= 127
-    ){
-
-        event.preventDefault();
-
-
-        const input = event.target;
-
-        const start =
-            input.selectionStart;
-
-        const end =
-            input.selectionEnd;
-
-
-        input.setRangeText(
-            event.key,
-            start,
-            end,
-            "end"
-        );
-
-    }
-
-}
-
-
-document
-    .getElementById("login-userid")
-    .addEventListener(
-        "keydown",
-        forceEnglishInput
-    );
-
-
-document
-    .getElementById("login-password")
-    .addEventListener(
-        "keydown",
-        forceEnglishInput
-    );
+  
 
 async function openRegister(){
 
@@ -1311,19 +1237,64 @@ if(!username){
            ĐĂNG NHẬP NGAY
         ================= */
 
-        const internalEmail =
-            `${username}@contegiacjp.internal`;
+        let loginData;
+let loginError;
 
+/* ================= ĐĂNG NHẬP BẰNG SĐT ================= */
 
-        const { error: loginError } =
-            await supabaseClient.auth.signInWithPassword({
+if (/^(\+84|0)\d{9}$/.test(username)) {
 
-                email: internalEmail,
+    let phone = username.replace(/[\s\-()]/g, "");
 
-                password: finalPassword
+    if (/^0\d{9}$/.test(phone)) {
 
-            });
+        phone =
+            "+84" +
+            phone.substring(1);
 
+    }
+
+    if (/^84\d{9}$/.test(phone)) {
+
+        phone =
+            "+" + phone;
+
+    }
+
+    const result =
+        await supabaseClient.auth.signInWithPassword({
+
+            phone: phone,
+
+            password: password
+
+        });
+
+    loginData = result.data;
+    loginError = result.error;
+
+}
+
+/* ================= ĐĂNG NHẬP BẰNG ID ================= */
+
+else {
+
+    const internalEmail =
+        `${username}@contegiacjp.internal`;
+
+    const result =
+        await supabaseClient.auth.signInWithPassword({
+
+            email: internalEmail,
+
+            password: password
+
+        });
+
+    loginData = result.data;
+    loginError = result.error;
+
+}
 
         if(loginError){
 
