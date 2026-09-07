@@ -1514,11 +1514,41 @@ const {
 
 if(phoneError){
 
-    console.error(phoneError);
+    console.error("PHONE ERROR:", phoneError);
+
+    let detail = "Không xác định được lỗi.";
+
+    try{
+
+        if(phoneError.context){
+
+            const errorData =
+                await phoneError.context.json();
+
+            console.error(
+                "PHONE FUNCTION ERROR:",
+                errorData
+            );
+
+            if(errorData?.error){
+                detail = errorData.error;
+            }
+
+        }
+
+    }
+    catch(e){
+
+        console.error(
+            "Không đọc được lỗi Function:",
+            e
+        );
+
+    }
 
     showMessage(
         "error",
-        "⚠️ Email đã được lưu nhưng không thể lưu số điện thoại."
+        "⚠️ Email đã lưu nhưng SĐT lỗi: " + detail
     );
 
     return;
