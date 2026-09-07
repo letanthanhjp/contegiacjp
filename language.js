@@ -310,6 +310,9 @@ const translations = {
 "Chào mừng": "Welcome",
 "quay trở lại ConteGiacJP!": "back to ConteGiacJP!",
 
+"Nhập ID, Email hoặc Số điện thoại đã đăng ký":"Input ID,Email or phone Number here",
+
+
     }
 
 };

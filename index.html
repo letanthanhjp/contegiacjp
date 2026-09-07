@@ -542,7 +542,7 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
             <input
                 type="text"
                 id="login-userid"
-                placeholder="Nhập ID của bạn"
+                placeholder="Nhập ID, Email hoặc Số điện thoại đã đăng ký"
             >
 
             <hr>
@@ -844,19 +844,21 @@ document.getElementById("login-password").addEventListener("keydown", function(e
 
 async function loginUser(){
 
-    const username =
+    const loginInput =
         document.getElementById("login-userid").value.trim();
 
     const password =
         document.getElementById("login-password").value;
 
 
-    if(!username){
+    /* ================= KIỂM TRA ================= */
+
+    if(!loginInput){
 
         showMessage(
             "⚠️",
-            "THIẾU ID",
-            "Vui lòng nhập ID để đăng nhập.",
+            "THIẾU THÔNG TIN",
+            "Vui lòng nhập ID, Email hoặc Số điện thoại.",
             false
         );
 
@@ -878,30 +880,143 @@ async function loginUser(){
 
 
     const button =
-        document.querySelector("#login-popup .register-confirm");
+        document.querySelector(
+            "#login-popup .register-confirm"
+        );
 
     button.disabled = true;
 
-    button.textContent = "Đang đăng nhập...";
+    button.textContent =
+        "Đang đăng nhập...";
 
 
     try{
 
-        /*
-         * ID của ConteGiacJP được chuyển thành
-         * email nội bộ để Supabase Auth đăng nhập.
-         */
-
-        const internalEmail =
-            `${username}@contegiacjp.internal`;
+        let loginEmail = null;
 
 
-        const { data, error } =
+        /* =========================================
+           1. NẾU NHẬP EMAIL
+           ========================================= */
+
+        if(loginInput.includes("@")){
+
+            loginEmail =
+                loginInput.toLowerCase();
+
+        }
+
+
+        /* =========================================
+           2. NẾU NHẬP SỐ ĐIỆN THOẠI
+           ========================================= */
+
+        else if(/^[0-9+\-\s()]+$/.test(loginInput)){
+
+            let phone =
+                loginInput.replace(
+                    /[\s\-()]/g,
+                    ""
+                );
+
+
+            /* 0901234567
+               → +84901234567 */
+
+            if(
+                phone.startsWith("0") &&
+                phone.length === 10
+            ){
+
+                phone =
+                    "+84" +
+                    phone.substring(1);
+
+            }
+
+
+            /* TODO:
+               Phần login bằng phone sẽ
+               hoàn thiện sau khi phone
+               được lưu vào Supabase Auth.
+            */
+
+            throw new Error(
+                "Số điện thoại chưa được thiết lập đăng nhập."
+            );
+
+        }
+
+
+        /* =========================================
+           3. NẾU NHẬP ID
+           ========================================= */
+
+        else{
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.functions.invoke(
+                    "register-user",
+                    {
+                        body:{
+                            action:"login_lookup",
+                            username:loginInput
+                        }
+                    }
+                );
+
+
+            if(error){
+
+                console.error(error);
+
+                throw new Error(
+                    "Không tìm thấy tài khoản."
+                );
+
+            }
+
+
+            if(data?.error){
+
+                throw new Error(
+                    "ID không tồn tại."
+                );
+
+            }
+
+
+            if(!data?.email){
+
+                throw new Error(
+                    "Tài khoản này chưa có Email đăng nhập."
+                );
+
+            }
+
+
+            loginEmail =
+                data.email;
+
+        }
+
+
+        /* =========================================
+           4. ĐĂNG NHẬP SUPABASE AUTH
+           ========================================= */
+
+        const {
+            data,
+            error
+        } =
             await supabaseClient.auth.signInWithPassword({
 
-                email: internalEmail,
+                email:loginEmail,
 
-                password: password
+                password:password
 
             });
 
@@ -909,25 +1024,37 @@ async function loginUser(){
         if(error){
 
             throw new Error(
-                "ID hoặc mật khẩu không đúng."
+                "Thông tin đăng nhập hoặc mật khẩu không đúng."
             );
 
         }
 
 
+        /* =========================================
+           5. LẤY USERNAME
+           ========================================= */
+
+        const username =
+            data.user?.user_metadata?.username ||
+            loginInput;
+
+
         showMessage(
             "🎉",
             "ĐĂNG NHẬP THÀNH CÔNG!",
-            "Chào mừng <b>" + username +
+            "Chào mừng <b>" +
+            username +
             "</b> quay trở lại ConteGiacJP!",
             true
         );
 
+
         setTimeout(function(){
 
-    closeMessage();
+            closeMessage();
 
-}, 1000);
+        }, 1000);
+
 
         closeLogin();
 
@@ -937,11 +1064,12 @@ async function loginUser(){
 
         console.error(error);
 
+
         showMessage(
             "⚠️",
             "ĐĂNG NHẬP THẤT BẠI",
             error.message ||
-            "ID hoặc mật khẩu không đúng.",
+            "Thông tin đăng nhập hoặc mật khẩu không đúng.",
             false
         );
 
@@ -950,11 +1078,13 @@ async function loginUser(){
 
         button.disabled = false;
 
-        button.textContent = "Đăng nhập";
+        button.textContent =
+            "Đăng nhập";
 
     }
 
 }
+
 
 function togglePassword(){
 
