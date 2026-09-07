@@ -543,6 +543,7 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
                 type="text"
                 id="login-userid"
                 placeholder="Nhập ID, Email hoặc Số điện thoại đã đăng ký"
+                  onbeforeinput="if(event.data && /[^\x00-\x7F]/.test(event.data)) event.preventDefault()"
             >
 
             <hr>
@@ -555,6 +556,7 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
                     type="password"
                     id="login-password"
                     placeholder="Nhập mật khẩu"
+                     onbeforeinput="if(event.data && /[^\x00-\x7F]/.test(event.data)) event.preventDefault()"
                 >
 
                 <button
