@@ -1555,16 +1555,46 @@ if(metadataPhoneError){
 
         if(phoneError){
 
-            console.error(phoneError);
+    console.error("PHONE ERROR:", phoneError);
 
-            showMessage(
-                "error",
-                "⚠️ Email đã lưu nhưng không thể lưu SĐT."
+    let detail = "Không xác định được lỗi.";
+
+    try{
+
+        if(phoneError.context){
+
+            const errorData =
+                await phoneError.context.json();
+
+            console.error(
+                "PHONE FUNCTION ERROR:",
+                errorData
             );
 
-            return;
+            if(errorData?.error){
+                detail = errorData.error;
+            }
 
         }
+
+    }
+    catch(e){
+
+        console.error(
+            "Không đọc được lỗi Function:",
+            e
+        );
+
+    }
+
+    showMessage(
+        "error",
+        "⚠️ Email đã lưu nhưng SĐT lỗi: " + detail
+    );
+
+    return;
+
+}
 
 
         if(phoneData?.error){
