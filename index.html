@@ -953,11 +953,12 @@ async function loginUser(){
     });
 
     if(error){
-        throw new Error(
-            "Số điện thoại hoặc mật khẩu không đúng."
-        );
-    }
+    console.error("PHONE LOGIN ERROR:", error);
 
+    throw new Error(
+        error.message
+    );
+}
     // Đã đăng nhập rồi → lấy username
     const username =
         data.user?.user_metadata?.username ||
