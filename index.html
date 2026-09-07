@@ -912,42 +912,74 @@ async function loginUser(){
            2. NẾU NHẬP SỐ ĐIỆN THOẠI
            ========================================= */
 
-        else if(/^[0-9+\-\s()]+$/.test(loginInput)){
+           else if(/^[0-9+\-\s()]+$/.test(loginInput)){
 
-            let phone =
-                loginInput.replace(
-                    /[\s\-()]/g,
-                    ""
-                );
+    let phone =
+        loginInput.replace(/[\s\-()]/g, "");
 
+    // 0901234567 → +84901234567
+    if(
+        phone.startsWith("0") &&
+        phone.length === 10
+    ){
+        phone =
+            "+84" +
+            phone.substring(1);
+    }
 
-            /* 0901234567
-               → +84901234567 */
+    // 84901234567 → +84901234567
+    else if(
+        phone.startsWith("84") &&
+        phone.length === 11
+    ){
+        phone =
+            "+" + phone;
+    }
 
-            if(
-                phone.startsWith("0") &&
-                phone.length === 10
-            ){
+    // Kiểm tra định dạng
+    if(!/^\+[1-9]\d{7,14}$/.test(phone)){
+        throw new Error(
+            "Số điện thoại không hợp lệ."
+        );
+    }
 
-                phone =
-                    "+84" +
-                    phone.substring(1);
+    // Đăng nhập bằng SĐT + mật khẩu
+    const {
+        data,
+        error
+    } = await supabaseClient.auth.signInWithPassword({
+        phone: phone,
+        password: password
+    });
 
-            }
+    if(error){
+        throw new Error(
+            "Số điện thoại hoặc mật khẩu không đúng."
+        );
+    }
 
+    // Đã đăng nhập rồi → lấy username
+    const username =
+        data.user?.user_metadata?.username ||
+        loginInput;
 
-            /* TODO:
-               Phần login bằng phone sẽ
-               hoàn thiện sau khi phone
-               được lưu vào Supabase Auth.
-            */
+    showMessage(
+        "🎉",
+        "ĐĂNG NHẬP THÀNH CÔNG!",
+        "Chào mừng <b>" +
+        username +
+        "</b> quay trở lại ConteGiacJP!",
+        true
+    );
 
-            throw new Error(
-                "Số điện thoại chưa được thiết lập đăng nhập."
-            );
+    setTimeout(function(){
+        closeMessage();
+    }, 1000);
 
-        }
+    closeLogin();
 
+    return;
+}
 
         /* =========================================
            3. NẾU NHẬP ID
