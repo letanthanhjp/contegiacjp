@@ -542,7 +542,7 @@ Chúng ta sẽ cùng nhau chinh phục tiếng Nhật.
             <input
                 type="text"
                 id="login-userid"
-                placeholder="Nhập ID, Email hoặc Số điện thoại đã đăng ký"
+                placeholder="Nhập ID hoặc Email đã đăng ký"
                 
             >
 
@@ -859,7 +859,7 @@ async function loginUser(){
         showMessage(
             "⚠️",
             "THIẾU THÔNG TIN",
-            "Vui lòng nhập ID, Email hoặc Số điện thoại.",
+            "Vui lòng nhập ID hoặc Email.",
             false
         );
 
@@ -907,83 +907,8 @@ async function loginUser(){
 
         }
 
-
-        /* =========================================
-           2. NẾU NHẬP SỐ ĐIỆN THOẠI
-           ========================================= */
-
-           else if(/^[0-9+\-\s()]+$/.test(loginInput)){
-
-    let phone =
-        loginInput.replace(/[\s\-()]/g, "");
-
-    // 0901234567 → +84901234567
-    if(
-        phone.startsWith("0") &&
-        phone.length === 10
-    ){
-        phone =
-            "+84" +
-            phone.substring(1);
-    }
-
-    // 84901234567 → +84901234567
-    else if(
-        phone.startsWith("84") &&
-        phone.length === 11
-    ){
-        phone =
-            "+" + phone;
-    }
-
-    // Kiểm tra định dạng
-    if(!/^\+[1-9]\d{7,14}$/.test(phone)){
-        throw new Error(
-            "Số điện thoại không hợp lệ."
-        );
-    }
-
-    // Đăng nhập bằng SĐT + mật khẩu
-    const {
-        data,
-        error
-    } = await supabaseClient.auth.signInWithPassword({
-        phone: phone,
-        password: password
-    });
-
-    if(error){
-    console.error("PHONE LOGIN ERROR:", error);
-
-    throw new Error(
-        error.message
-    );
-}
-    // Đã đăng nhập rồi → lấy username
-    const username =
-        data.user?.user_metadata?.username ||
-        loginInput;
-
-    showMessage(
-        "🎉",
-        "ĐĂNG NHẬP THÀNH CÔNG!",
-        "Chào mừng <b>" +
-        username +
-        "</b> quay trở lại ConteGiacJP!",
-        true
-    );
-
-    setTimeout(function(){
-        closeMessage();
-    }, 1000);
-
-    closeLogin();
-
-    return;
-}
-
-        /* =========================================
-           3. NẾU NHẬP ID
+/* =========================================
+           2. NẾU NHẬP ID
            ========================================= */
 
         else{
@@ -1039,7 +964,7 @@ async function loginUser(){
 
 
         /* =========================================
-           4. ĐĂNG NHẬP SUPABASE AUTH
+           3. ĐĂNG NHẬP SUPABASE AUTH
            ========================================= */
 
         const {
@@ -1065,7 +990,7 @@ async function loginUser(){
 
 
         /* =========================================
-           5. LẤY USERNAME
+           4. LẤY USERNAME
            ========================================= */
 
         const username =
@@ -1273,61 +1198,22 @@ if(!username){
         let loginData;
 let loginError;
 
-/* ================= ĐĂNG NHẬP BẰNG SĐT ================= */
+/* ================= ĐĂNG NHẬP TỰ ĐỘNG BẰNG ID ================= */
 
-if (/^(\+84|0)\d{9}$/.test(username)) {
+const internalEmail =
+    `${username}@contegiacjp.internal`;
 
-    let phone = username.replace(/[\s\-()]/g, "");
+const result =
+    await supabaseClient.auth.signInWithPassword({
 
-    if (/^0\d{9}$/.test(phone)) {
+        email: internalEmail,
 
-        phone =
-            "+84" +
-            phone.substring(1);
+        password: password
 
-    }
+    });
 
-    if (/^84\d{9}$/.test(phone)) {
-
-        phone =
-            "+" + phone;
-
-    }
-
-    const result =
-        await supabaseClient.auth.signInWithPassword({
-
-            phone: phone,
-
-            password: password
-
-        });
-
-    loginData = result.data;
-    loginError = result.error;
-
-}
-
-/* ================= ĐĂNG NHẬP BẰNG ID ================= */
-
-else {
-
-    const internalEmail =
-        `${username}@contegiacjp.internal`;
-
-    const result =
-        await supabaseClient.auth.signInWithPassword({
-
-            email: internalEmail,
-
-            password: password
-
-        });
-
-    loginData = result.data;
-    loginError = result.error;
-
-}
+loginData = result.data;
+loginError = result.error;
 
         if(loginError){
 
