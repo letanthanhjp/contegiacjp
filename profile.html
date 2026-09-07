@@ -1476,20 +1476,82 @@ async function saveProfile(){
 
         /* ================= LƯU SỐ ĐIỆN THOẠI ================= */
 
-        const {
-            data:phoneData,
-            error:phoneError
-        } =
-            await supabaseClient.functions.invoke(
-                "register-user",
-                {
-                    body:{
-                        action:"update_phone",
-                        phone:phone
-                    }
-                }
-            );
+       /* ================= LƯU SỐ ĐIỆN THOẠI ================= */
 
+const {
+    data: currentUserData
+} =
+    await supabaseClient.auth.getUser();
+
+const currentUser =
+    currentUserData?.user;
+
+
+if(!currentUser){
+
+    showMessage(
+        "error",
+        "❌ Phiên đăng nhập đã hết."
+    );
+
+    return;
+
+}
+
+
+/* ================= LƯU VÀO USERS ================= */
+
+const {
+    error: phoneError
+} =
+    await supabaseClient
+        .from("users")
+        .update({
+            phone: phone
+        })
+        .eq("id", currentUser.id);
+
+
+if(phoneError){
+
+    console.error(phoneError);
+
+    showMessage(
+        "error",
+        "⚠️ Email đã được lưu nhưng không thể lưu số điện thoại."
+    );
+
+    return;
+
+}
+
+
+/* ================= LƯU METADATA ================= */
+
+const {
+    error: metadataPhoneError
+} =
+    await supabaseClient.auth.updateUser({
+
+        data:{
+            profile_phone: phone
+        }
+
+    });
+
+
+if(metadataPhoneError){
+
+    console.error(metadataPhoneError);
+
+    showMessage(
+        "error",
+        "⚠️ Số điện thoại đã lưu nhưng không thể cập nhật hồ sơ."
+    );
+
+    return;
+
+}
 
         if(phoneError){
 
